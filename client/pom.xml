@@ -11,24 +11,40 @@
 	<name>Client</name>
 	<description>Client Application, provide user interfaces.</description>
 
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>com.erc.his</groupId>
 			<artifactId>shared</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20210307</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.jgoodies</groupId>
 			<artifactId>jgoodies-forms</artifactId>
 			<version>1.9.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jidesoft</groupId>
+			<artifactId>jide-grids</artifactId>
+			<version>3.5.15</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jidesoft</groupId>
+			<artifactId>jide-components</artifactId>
+			<version>3.5.15</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jidesoft</groupId>
+			<artifactId>jide-oss</artifactId>
+			<version>3.6.18</version>
 		</dependency>
 	</dependencies>
 </project>
