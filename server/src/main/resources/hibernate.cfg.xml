@@ -26,6 +26,6 @@
 		<mapping resource="com/erc/entity/patient.hbm.xml" />
 		<mapping resource="com/erc/entity/staff.hbm.xml" />
 		-->
-		<mapping resource="com/erc/entity/admission.hbm.xml" />
+		<mapping resource="com/erc/entity/patient.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

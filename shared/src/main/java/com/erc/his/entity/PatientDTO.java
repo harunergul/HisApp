@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class PatientDTO implements Serializable {
-
+ 
+	private static final long serialVersionUID = 6024551171120968334L;
 	private Long patientId;
 	private String identificationNo;
 	private String firstName;
