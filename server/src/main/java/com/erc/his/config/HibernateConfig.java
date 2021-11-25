@@ -1,11 +1,13 @@
 package com.erc.his.config;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.type.LongType;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -26,6 +28,13 @@ public class HibernateConfig {
 
 	public Session getSession() {
 		return session;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public Long generateID() {
+		SQLQuery sqlQuery = getSession().createSQLQuery("select AA_PATIENT_SEQ.nextval value from dual");
+		sqlQuery.addScalar("value", new LongType());
+		return (Long) sqlQuery.uniqueResult();
 	}
 
 }

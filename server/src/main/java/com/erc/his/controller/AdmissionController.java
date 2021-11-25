@@ -28,6 +28,7 @@ import com.erc.his.entity.AdmissionDTO;
 @RestController
 @RequestMapping("admission")
 public class AdmissionController {
+	
 	@Autowired
 	private HibernateConfig config;
 	
@@ -145,8 +146,8 @@ public class AdmissionController {
 	public ResponseEntity<AdmissionDTO> saveAdmission(@RequestBody AdmissionDTO admissionDTO) throws Exception{
 		Session session = config.getSession();
 		session.clear();
-		admissionDTO.setAdmissionId(generateID());
-		admissionDTO.setAdmissionNo(generateID());
+		admissionDTO.setAdmissionId(config.generateID());
+		admissionDTO.setAdmissionNo(config.generateID());
 		admissionDTO.setStatus("1");
 		admissionDTO.setCloseStatus("OPEN");
 		session.beginTransaction();
@@ -178,10 +179,5 @@ public class AdmissionController {
 		return new ResponseEntity<>(admissionDTO, HttpStatus.OK);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public Long generateID() {
-		SQLQuery sqlQuery = config.getSession().createSQLQuery("select AA_PATIENT_SEQ.nextval value from dual");
-		sqlQuery.addScalar("value", new LongType());
-		return (Long) sqlQuery.uniqueResult();
-	}
+ 
 }
