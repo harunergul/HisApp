@@ -32,12 +32,7 @@ public class MenuFrame extends JFrame {
 	private JMenuItem menuPatientAdmission;
 
 	public MenuFrame() {
-
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\caglak\\Desktop\\Icons\\hospital.png"));
-		getContentPane().setFont(new Font("Century Gothic", Font.PLAIN, 20));
-
 		setSize(1942, 1097);
-
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
