@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.erc.his.entity.AdmissionDTO" table="CKADMISSION">
+
+
+		<id name="admissionId" column="ADMISSION_ID" type="java.lang.Long">
+			<generator class="increment" />
+		</id>
+
+		<property name="patientId" column="PATIENT_ID" type="java.lang.Long" />
+		<property name="admissionNo" column="ADMISSION_NO" type="java.lang.Long" />
+		<property name="admissionDate" column="ADMISSION_DATE" type="java.util.Date" />
+		<property name="treatmentType" column="TREATMENT_TYPE" type="java.lang.String" />
+		<property name="organizationId" column="ORGANIZATION_ID" type="java.lang.Long" />
+		<property name="staffId" column="STAFF_ID" type="java.lang.Long" />
+		<property name="note" column="NOTE" type="java.lang.String" />
+		<property name="status" column="STATUS" type="java.lang.String" />
+		<property name="closeStatus" column="CLOSE_STATUS" type="java.lang.String" />
+	</class>
+</hibernate-mapping>

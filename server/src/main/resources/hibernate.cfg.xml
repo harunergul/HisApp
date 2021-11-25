@@ -1,0 +1,31 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+
+		<property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
+
+		<property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+
+		<!-- Assume test is the database name -->
+
+		<property name="hibernate.connection.url">jdbc:oracle:thin:@172.17.2.36:1521:AVC</property>
+
+		<property name="hibernate.connection.username">avc237</property>
+
+		<property name="hibernate.connection.password">avctest</property>
+
+		<!-- List of XML mapping files -->
+		<!--
+		<mapping resource="com/erc/entity/appointment.hbm.xml" />
+		<mapping resource="com/erc/entity/apellation.hbm.xml" />
+		<mapping resource="com/erc/entity/city.hbm.xml" />
+		<mapping resource="com/erc/entity/district.hbm.xml" />
+		<mapping resource="com/erc/entity/organization.hbm.xml" />
+		<mapping resource="com/erc/entity/patient.hbm.xml" />
+		<mapping resource="com/erc/entity/staff.hbm.xml" />
+		-->
+		<mapping resource="com/erc/entity/admission.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>
