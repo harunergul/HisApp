@@ -24,25 +24,25 @@ public class PatientPanel extends MainPanel {
 		gridBagLayout.rowHeights = new int[] { 5, 0, 0, 5, 0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
-		getContentPane().setLayout(gridBagLayout);
+		setLayout(gridBagLayout);
 
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
 		gbc_btnAdd.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAdd.gridx = 2;
 		gbc_btnAdd.gridy = 1;
-		getContentPane().add(btnAdd, gbc_btnAdd);
+		add(btnAdd, gbc_btnAdd);
 
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton.gridx = 3;
 		gbc_btnNewButton.gridy = 1;
-		getContentPane().add(btnUpdate, gbc_btnNewButton);
+		add(btnUpdate, gbc_btnNewButton);
 
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton_1.gridx = 4;
 		gbc_btnNewButton_1.gridy = 1;
-		getContentPane().add(btnDelete, gbc_btnNewButton_1);
+		add(btnDelete, gbc_btnNewButton_1);
 
 		GridBagConstraints gbc_table = new GridBagConstraints();
 		gbc_table.insets = new Insets(0, 0, 5, 5);
@@ -50,7 +50,7 @@ public class PatientPanel extends MainPanel {
 		gbc_table.fill = GridBagConstraints.BOTH;
 		gbc_table.gridx = 1;
 		gbc_table.gridy = 2;
-		getContentPane().add(scrollPane, gbc_table);
+		add(scrollPane, gbc_table);
 		patientTable.setModel(patientTableModel);
 		scrollPane.setViewportView(patientTable);
 

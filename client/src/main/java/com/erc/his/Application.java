@@ -13,9 +13,8 @@ public class Application {
 
 		PatientPanel panel = new PatientPanel();
 
-		BorderLayout layout = new BorderLayout();
-		layout.addLayoutComponent(panel, BorderLayout.CENTER);
-		frame.setLayout(layout);
+ 		frame.setLayout(new BorderLayout());
+ 		frame.getContentPane().add(panel, BorderLayout.CENTER);
  		frame.setSize(400, 500);// 400 width and 500 height
 		frame.setVisible(true);// making the frame visible
 

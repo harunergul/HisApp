@@ -2,8 +2,9 @@ package com.erc.his.client.view;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
-public class MainPanel extends JFrame {
+public class MainPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
