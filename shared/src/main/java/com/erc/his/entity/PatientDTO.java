@@ -4,15 +4,18 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class PatientDTO implements Serializable {
- 
+
 	private static final long serialVersionUID = 6024551171120968334L;
 	private Long patientId;
+	private String patientNo;
 	private String identificationNo;
 	private String firstName;
 	private String lastName;
 	private Date birthDate;
 	private String gender;
 	private String status;
+	private String bloodGroup;
+	private String maritalStatus;
 
 	public Long getPatientId() {
 		return patientId;
@@ -68,6 +71,34 @@ public class PatientDTO implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getPatientNo() {
+		return patientNo;
+	}
+
+	public void setPatientNo(String patientNo) {
+		this.patientNo = patientNo;
+	}
+
+	public String getBloodGroup() {
+		return bloodGroup;
+	}
+
+	public void setBloodGroup(String bloodGroup) {
+		this.bloodGroup = bloodGroup;
+	}
+
+	public String getMaritalStatus() {
+		return maritalStatus;
+	}
+
+	public void setMaritalStatus(String maritalStatus) {
+		this.maritalStatus = maritalStatus;
+	}
+
+	public int getCalculatedAge() {
+		return 45;
 	}
 
 }

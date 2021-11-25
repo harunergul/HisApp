@@ -1,12 +1,9 @@
 package com.erc.his.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.erc.his.config.HibernateConfig;
-import com.erc.his.entity.AdmissionDTO;
 import com.erc.his.entity.PatientDTO;
 
 @RestController

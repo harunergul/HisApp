@@ -12,6 +12,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import com.erc.his.client.view.PatientPanel;
+
 public class MenuFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -65,7 +67,7 @@ public class MenuFrame extends JFrame {
 		mnMenu.setFont(new Font("Century Gothic", Font.BOLD, 12));
 		menuBar.add(mnMenu);
 
-		menuPatient = new JMenuItem("PATIENT TABLE");
+		menuPatient = new JMenuItem("PRS001: Patient Information Screen");
 		menuPatient.setFont(new Font("Century Gothic", Font.PLAIN, 10));
 		mnMenu.add(menuPatient);
 
@@ -111,13 +113,13 @@ public class MenuFrame extends JFrame {
 	public void clickMenuItem() {
 		menuPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				PatientPanel panel = new PatientPanel();
-//				getContentPane().removeAll();
-//				getContentPane().add(panel);
-//				setLocationRelativeTo(null);
-//				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//				setExtendedState(JFrame.MAXIMIZED_BOTH);
-//				setVisible(true);
+				PatientPanel panel = new PatientPanel();
+				removeAll();
+				add(panel);
+				setLocationRelativeTo(null);
+				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				setExtendedState(JFrame.MAXIMIZED_BOTH);
+				setVisible(true);
 			}
 		});
 		
