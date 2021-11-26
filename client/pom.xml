@@ -32,6 +32,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>net.sourceforge.jdatepicker</groupId>
+			<artifactId>jdatepicker</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>jdp</groupId>
+			<artifactId>jdatepicker-javadoc</artifactId>
+			<version>1.3.4</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>com.jidesoft</groupId>
 			<artifactId>jide-grids</artifactId>
 			<version>3.5.15</version>
