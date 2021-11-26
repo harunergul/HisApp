@@ -100,6 +100,10 @@ public class ClientApp {
 		return null;
 
 	}
+	@SuppressWarnings("unchecked")
+	private <T> T postRequest(String pathUrl, Class<T> clazz, Object data) throws Exception {
+		return postRequest(pathUrl, clazz, convertObjectToJson(data));
+	}
 	
 	@SuppressWarnings("unchecked")
 	private <T> T postRequest(String pathUrl, Class<T> clazz, JSONObject data) {
@@ -173,5 +177,10 @@ public class ClientApp {
 		ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		
 		return mapper.writeValueAsString(object);
+	}
+
+
+	public PatientDTO savePatient(PatientDTO patientDTO) throws Exception {
+		return postRequest("/patient/save", PatientDTO.class, patientDTO);
 	}
 }

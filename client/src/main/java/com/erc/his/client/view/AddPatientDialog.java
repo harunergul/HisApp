@@ -3,6 +3,8 @@ package com.erc.his.client.view;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -10,16 +12,28 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.erc.his.ClientApp;
 import com.erc.his.client.component.DatePickerComponent;
+import com.erc.his.client.component.MainDialog;
+import com.erc.his.entity.PatientDTO;
+import com.erc.his.enums.BloodGroup;
+import com.erc.his.enums.Gender;
+import com.erc.his.enums.MaritalStatus;
 
-public class AddPatientDialog extends JDialog {
-	 
+public class AddPatientDialog extends MainDialog {
+
 	private static final long serialVersionUID = 1L;
 	private JTextField txtPatientNo;
 	private JTextField txtFirstName;
 	private JTextField txtLastName;
 	private JTextField txtIdentificationNo;
 	private DatePickerComponent birthDate = new DatePickerComponent();
+	private JButton btnCancel = new JButton("Cancel");
+	private JButton btnSave = new JButton("Save");
+	private final String choose = "--Choose--";
+	private final String SAVE_EVENT = "SAVE_EVENT";
+	private final String CANCEL_EVENT = "CANCEL_EVENT";
+	private final ClientApp serviceHelper = new ClientApp();
 
 	public AddPatientDialog() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -45,6 +59,7 @@ public class AddPatientDialog extends JDialog {
 		gbc_txtPatientNo.gridy = 1;
 		add(txtPatientNo, gbc_txtPatientNo);
 		txtPatientNo.setColumns(10);
+		txtPatientNo.setEditable(false);
 
 		JLabel lblMaritalStatus = new JLabel("Marital Status");
 		GridBagConstraints gbc_lblMaritalStatus = new GridBagConstraints();
@@ -54,7 +69,7 @@ public class AddPatientDialog extends JDialog {
 		gbc_lblMaritalStatus.gridy = 1;
 		add(lblMaritalStatus, gbc_lblMaritalStatus);
 
-		JComboBox cbMaritalStatus = new JComboBox();
+		JComboBox<String> cbMaritalStatus = new JComboBox<String>();
 		GridBagConstraints gbc_cbMaritalStatus = new GridBagConstraints();
 		gbc_cbMaritalStatus.gridwidth = 3;
 		gbc_cbMaritalStatus.insets = new Insets(0, 0, 5, 5);
@@ -88,7 +103,7 @@ public class AddPatientDialog extends JDialog {
 		gbc_lblBloodGroup.gridy = 2;
 		add(lblBloodGroup, gbc_lblBloodGroup);
 
-		JComboBox cbBloodGroup = new JComboBox();
+		JComboBox<String> cbBloodGroup = new JComboBox<String>();
 		GridBagConstraints gbc_cbBloodGroup = new GridBagConstraints();
 		gbc_cbBloodGroup.gridwidth = 3;
 		gbc_cbBloodGroup.insets = new Insets(0, 0, 5, 5);
@@ -122,7 +137,7 @@ public class AddPatientDialog extends JDialog {
 		gbc_lblGender.gridy = 3;
 		add(lblGender, gbc_lblGender);
 
-		JComboBox cbGender = new JComboBox();
+		JComboBox<String> cbGender = new JComboBox<String>();
 		GridBagConstraints gbc_cbGender = new GridBagConstraints();
 		gbc_cbGender.gridwidth = 3;
 		gbc_cbGender.insets = new Insets(0, 0, 5, 5);
@@ -155,29 +170,97 @@ public class AddPatientDialog extends JDialog {
 		gbc_lblBirthDate.gridy = 4;
 		add(lblBirthDate, gbc_lblBirthDate);
 
- 		GridBagConstraints gbc_panelDate = new GridBagConstraints();
- 		gbc_panelDate.gridwidth = 3;
+		GridBagConstraints gbc_panelDate = new GridBagConstraints();
+		gbc_panelDate.gridwidth = 3;
 		gbc_panelDate.insets = new Insets(0, 0, 5, 5);
 		gbc_panelDate.fill = GridBagConstraints.BOTH;
 		gbc_panelDate.gridx = 5;
 		gbc_panelDate.gridy = 4;
 		add(birthDate, gbc_panelDate);
-		
-		JButton btnSave = new JButton("Save");
+
 		GridBagConstraints gbc_btnSave = new GridBagConstraints();
 		gbc_btnSave.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSave.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSave.gridx = 6;
 		gbc_btnSave.gridy = 6;
 		add(btnSave, gbc_btnSave);
-		
-		JButton btnCancel = new JButton("Cancel");
+
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCancel.gridx = 7;
 		gbc_btnCancel.gridy = 6;
 		add(btnCancel, gbc_btnCancel);
+
+		
+		cbMaritalStatus.addItem(choose);
+		cbBloodGroup.addItem(choose);
+		cbGender.addItem(choose);
+		
+		MaritalStatus.getAll().stream().forEach(item -> cbMaritalStatus.addItem(item));
+		BloodGroup.getAll().stream().forEach(item-> cbBloodGroup.addItem(item));
+		Gender.getAll().stream().forEach(item-> cbGender.addItem(item));
+		
+
+		addEvents();
+		
+
+	}
+
+	private void addEvents() {
+		AddPatientDialogEventListener listener = new AddPatientDialogEventListener();
+		btnSave.addActionListener(listener);
+		btnCancel.addActionListener(listener);
+
+		btnSave.setActionCommand(SAVE_EVENT);
+		btnCancel.setActionCommand(CANCEL_EVENT);
+
+	}
+
+	private class AddPatientDialogEventListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String cmd = e.getActionCommand();
+
+			if (cmd.equals(SAVE_EVENT)) {
+				PatientDTO patientDTO = new PatientDTO();
+
+				String firstName = txtFirstName.getText();
+				String lastName = txtLastName.getText();
+				String identificationNo = txtIdentificationNo.getText();
+
+				if (firstName.contentEquals("")) {
+					showWarning("Please fill patient name!");
+					return;
+				}
+
+				if (lastName.contentEquals("")) {
+					showWarning("Please fill patient last name!");
+					return;
+				}
+
+				if (identificationNo.contentEquals("")) {
+					showWarning("Please fill patient identification no!");
+					return;
+				}
+
+				patientDTO.setFirstName(firstName);
+				patientDTO.setLastName(lastName);
+				patientDTO.setIdentificationNo(identificationNo);
+
+				try {
+					patientDTO = serviceHelper.savePatient(patientDTO);
+				} catch (Exception e1) {
+					showError("Error during the saving!");
+					e1.printStackTrace();
+				}
+			} else if (cmd.equals(CANCEL_EVENT)) {
+				dispose();
+			}
+
+		}
+
 	}
 
 }

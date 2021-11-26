@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JTable;
 
 import com.erc.his.ClientApp;
+import com.erc.his.client.component.MainPanel;
 import com.erc.his.entity.PatientDTO;
 
 import javax.swing.JScrollPane;

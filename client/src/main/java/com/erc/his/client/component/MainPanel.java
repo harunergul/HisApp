@@ -1,4 +1,4 @@
-package com.erc.his.client.view;
+package com.erc.his.client.component;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
