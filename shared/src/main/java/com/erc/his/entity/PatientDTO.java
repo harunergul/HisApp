@@ -3,6 +3,8 @@ package com.erc.his.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class PatientDTO implements Serializable {
 
 	private static final long serialVersionUID = 6024551171120968334L;
@@ -97,6 +99,7 @@ public class PatientDTO implements Serializable {
 		this.maritalStatus = maritalStatus;
 	}
 
+	@JsonIgnore
 	public int getCalculatedAge() {
 		return 45;
 	}

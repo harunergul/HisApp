@@ -13,10 +13,12 @@ import com.erc.his.entity.AdmissionDTO;
 import com.erc.his.entity.PatientDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
+import com.google.gson.Gson;
 
 public class ClientApp {
-
 	
+	private Gson gson = new Gson();
 	
 	public static void main(String... args) {
 
@@ -100,13 +102,9 @@ public class ClientApp {
 		return null;
 
 	}
-	@SuppressWarnings("unchecked")
-	private <T> T postRequest(String pathUrl, Class<T> clazz, Object data) throws Exception {
-		return postRequest(pathUrl, clazz, convertObjectToJson(data));
-	}
 	
 	@SuppressWarnings("unchecked")
-	private <T> T postRequest(String pathUrl, Class<T> clazz, JSONObject data) {
+	private <T> T postRequest(String pathUrl, Class<T> clazz, String data) {
 		 
 		URL url;
 		try {
@@ -114,12 +112,11 @@ public class ClientApp {
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setDoOutput(true);
 			connection.setRequestMethod("POST");
-// 			connection.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
  			connection.setRequestProperty( "Content-Type", "application/json");
  			connection.setRequestProperty( "charset", "utf-8");
  			
  			
- 			byte[] postData = data.toString().getBytes(StandardCharsets.UTF_8 );
+ 			byte[] postData = data.getBytes(StandardCharsets.UTF_8 );
  			connection.setRequestProperty( "Content-Length", Integer.toString( postData.length ));
 			
 			try(OutputStream os = connection.getOutputStream()) {
@@ -127,8 +124,6 @@ public class ClientApp {
 			}
 			
 			InputStream responseStream = connection.getInputStream();
-
- 			
 			ObjectMapper mapper = new ObjectMapper();
 			Object apod = mapper.readValue(responseStream, clazz);
 			return (T) apod;
@@ -175,12 +170,13 @@ public class ClientApp {
 	}
 	public static String convertObjectToJson(Object object) throws Exception{
 		ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		
 		return mapper.writeValueAsString(object);
 	}
 
-
 	public PatientDTO savePatient(PatientDTO patientDTO) throws Exception {
-		return postRequest("/patient/save", PatientDTO.class, patientDTO);
+		return postRequest("/patient/save", PatientDTO.class, gson.toJson(patientDTO));
 	}
+
+
+	
 }

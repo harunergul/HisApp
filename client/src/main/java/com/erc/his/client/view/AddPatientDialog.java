@@ -5,10 +5,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
@@ -27,7 +27,10 @@ public class AddPatientDialog extends MainDialog {
 	private JTextField txtFirstName;
 	private JTextField txtLastName;
 	private JTextField txtIdentificationNo;
-	private DatePickerComponent birthDate = new DatePickerComponent();
+	private JComboBox<String> cbGender = new JComboBox<String>();
+	private JComboBox<String> cbBloodGroup = new JComboBox<String>();
+	private JComboBox<String> cbMaritalStatus = new JComboBox<String>();
+	private DatePickerComponent birthDateDatePicker = new DatePickerComponent();
 	private JButton btnCancel = new JButton("Cancel");
 	private JButton btnSave = new JButton("Save");
 	private final String choose = "--Choose--";
@@ -69,7 +72,7 @@ public class AddPatientDialog extends MainDialog {
 		gbc_lblMaritalStatus.gridy = 1;
 		add(lblMaritalStatus, gbc_lblMaritalStatus);
 
-		JComboBox<String> cbMaritalStatus = new JComboBox<String>();
+		
 		GridBagConstraints gbc_cbMaritalStatus = new GridBagConstraints();
 		gbc_cbMaritalStatus.gridwidth = 3;
 		gbc_cbMaritalStatus.insets = new Insets(0, 0, 5, 5);
@@ -103,7 +106,6 @@ public class AddPatientDialog extends MainDialog {
 		gbc_lblBloodGroup.gridy = 2;
 		add(lblBloodGroup, gbc_lblBloodGroup);
 
-		JComboBox<String> cbBloodGroup = new JComboBox<String>();
 		GridBagConstraints gbc_cbBloodGroup = new GridBagConstraints();
 		gbc_cbBloodGroup.gridwidth = 3;
 		gbc_cbBloodGroup.insets = new Insets(0, 0, 5, 5);
@@ -137,7 +139,7 @@ public class AddPatientDialog extends MainDialog {
 		gbc_lblGender.gridy = 3;
 		add(lblGender, gbc_lblGender);
 
-		JComboBox<String> cbGender = new JComboBox<String>();
+
 		GridBagConstraints gbc_cbGender = new GridBagConstraints();
 		gbc_cbGender.gridwidth = 3;
 		gbc_cbGender.insets = new Insets(0, 0, 5, 5);
@@ -176,7 +178,7 @@ public class AddPatientDialog extends MainDialog {
 		gbc_panelDate.fill = GridBagConstraints.BOTH;
 		gbc_panelDate.gridx = 5;
 		gbc_panelDate.gridy = 4;
-		add(birthDate, gbc_panelDate);
+		add(birthDateDatePicker, gbc_panelDate);
 
 		GridBagConstraints gbc_btnSave = new GridBagConstraints();
 		gbc_btnSave.fill = GridBagConstraints.HORIZONTAL;
@@ -229,6 +231,11 @@ public class AddPatientDialog extends MainDialog {
 				String firstName = txtFirstName.getText();
 				String lastName = txtLastName.getText();
 				String identificationNo = txtIdentificationNo.getText();
+				String bloodGroup = (String)cbBloodGroup.getSelectedItem();
+				String maritalStatus = (String)cbMaritalStatus.getSelectedItem();
+				String gender =(String) cbGender.getSelectedItem();
+				Date birthDate =  birthDateDatePicker.getDate();
+				
 
 				if (firstName.contentEquals("")) {
 					showWarning("Please fill patient name!");
@@ -245,9 +252,32 @@ public class AddPatientDialog extends MainDialog {
 					return;
 				}
 
+				if(cbBloodGroup.getSelectedIndex()==0) {
+					showWarning("Please select blood group!");
+					return;
+				}
+				
+				if(cbMaritalStatus.getSelectedIndex()==0) {
+					showWarning("Please select marital status!");
+					return;
+				}
+				
+				if(cbGender.getSelectedIndex()==0) {
+					showWarning("Please select patient gender!");
+					return;
+				}
+				
+				if(birthDateDatePicker.getDate()==null) {
+					showWarning("Please select birth date!");
+					return;
+				}
+				
 				patientDTO.setFirstName(firstName);
 				patientDTO.setLastName(lastName);
 				patientDTO.setIdentificationNo(identificationNo);
+				patientDTO.setBloodGroup(bloodGroup);
+				patientDTO.setGender(gender);
+				patientDTO.setMaritalStatus(maritalStatus);
 
 				try {
 					patientDTO = serviceHelper.savePatient(patientDTO);
