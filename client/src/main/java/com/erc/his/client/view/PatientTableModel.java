@@ -8,7 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import com.erc.his.entity.PatientDTO;
 
 public class PatientTableModel extends AbstractTableModel {
- 
+
 	private static final long serialVersionUID = -8272591925071178409L;
 
 	private List<PatientDTO> listData = new ArrayList<>();
@@ -20,7 +20,7 @@ public class PatientTableModel extends AbstractTableModel {
 	public int getRowCount() {
 		return listData.size();
 	}
-	
+
 	@Override
 	public String getColumnName(int column) {
 		return columnName[column];
@@ -57,6 +57,14 @@ public class PatientTableModel extends AbstractTableModel {
 		}
 		return null;
 
+	}
+
+	public List<PatientDTO> getListData() {
+		return listData;
+	}
+
+	public void setListData(List<PatientDTO> listData) {
+		this.listData = listData;
 	}
 
 }

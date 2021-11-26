@@ -5,15 +5,19 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import org.json.JSONObject;
 
 import com.erc.his.entity.AdmissionDTO;
+import com.erc.his.entity.PatientDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ClientApp {
 
+	
+	
 	public static void main(String... args) {
 
 		ClientApp app = new ClientApp();
@@ -41,7 +45,7 @@ public class ClientApp {
 		return postUpdateRequest("/admission/create", AdmissionDTO.class, convertObjectToJson(json));
 	}
 	public AdmissionDTO[] getAllAdmission() {
-		return makeRequest("/admission", AdmissionDTO[].class);
+		return httpGetMethod("/admission", AdmissionDTO[].class);
 	}
 	public AdmissionDTO updateAdmission(AdmissionDTO admissionDTO) throws Exception {
 		return postUpdateRequest("/admission/update", AdmissionDTO.class, convertObjectToJson(admissionDTO));
@@ -49,8 +53,30 @@ public class ClientApp {
 	public AdmissionDTO deleteAdmission(AdmissionDTO admissionDTO) throws Exception {
 		return postUpdateRequest("/admission/delete", AdmissionDTO.class, convertObjectToJson(admissionDTO));
 	}
+	
+	
+	public ArrayList<PatientDTO> getAllPatients() {
+		PatientDTO[] patients = httpGetMethod("/patient/all", PatientDTO[].class);
+		convertToList(patients);
+		return convertToList(patients);
+	}
+		
+	private <T> ArrayList<T> convertToList(T[] entities) {
+		ArrayList<T> list = new ArrayList<T>();
+
+		if (entities == null) {
+			return list;
+		}
+
+		for (T entity : entities) {
+			list.add(entity);
+		}
+		return list;
+	}
+
+
 	@SuppressWarnings("unchecked")
-	public <T> T makeRequest(String pathUrl, Class<T> clazz) {
+	public <T> T httpGetMethod(String pathUrl, Class<T> clazz) {
  
 		URL url;
 		try {

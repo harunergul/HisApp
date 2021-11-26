@@ -4,7 +4,15 @@ import java.awt.GridBagLayout;
 import javax.swing.JButton;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JTable;
+
+import com.erc.his.ClientApp;
+import com.erc.his.entity.PatientDTO;
+
 import javax.swing.JScrollPane;
 
 public class PatientPanel extends MainPanel {
@@ -16,6 +24,11 @@ public class PatientPanel extends MainPanel {
 	private final JTable patientTable = new JTable();
 	private final PatientTableModel patientTableModel = new PatientTableModel();
 	private final JScrollPane scrollPane = new JScrollPane();
+
+	private final String ADD_EVENT = "ADD_EVENT";
+	private final String UPDATE_EVENT = "UPDATE_EVENT";
+	private final String DELETE_EVENT = "DELETE_EVENT";
+	private final ClientApp serviceHelper = new ClientApp();
 
 	public PatientPanel() {
 
@@ -54,6 +67,47 @@ public class PatientPanel extends MainPanel {
 		patientTable.setModel(patientTableModel);
 		scrollPane.setViewportView(patientTable);
 
+		addEvents();
+		getAllPatients();
+
+	}
+
+	private void getAllPatients() {
+		ArrayList<PatientDTO> patientList = serviceHelper.getAllPatients();
+		patientTableModel.setListData(patientList);
+		patientTableModel.fireTableDataChanged();
+	}
+
+	private void addEvents() {
+		PatientPanelEventListener listener = new PatientPanelEventListener();
+		btnAdd.addActionListener(listener);
+		btnUpdate.addActionListener(listener);
+		btnDelete.addActionListener(listener);
+
+		btnAdd.setActionCommand(ADD_EVENT);
+		btnUpdate.setActionCommand(UPDATE_EVENT);
+		btnDelete.setActionCommand(DELETE_EVENT);
+
+	}
+
+	private class PatientPanelEventListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String cmd = e.getActionCommand();
+
+			if (cmd.equals(ADD_EVENT)) {
+				AddPatientDialog dialog = new AddPatientDialog();
+				dialog.setModal(true);
+				dialog.setSize(560, 250);
+				dialog.setVisible(true);
+			} else if (cmd.equals(UPDATE_EVENT)) {
+
+			} else if (cmd.equals(DELETE_EVENT)) {
+
+			}
+
+		}
 
 	}
 

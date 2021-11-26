@@ -1,5 +1,6 @@
 package com.erc.his.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -35,46 +36,29 @@ public class PatientController {
 		return new ResponseEntity<>(patientDTO, HttpStatus.OK);
 	}
 
-	
 	@GetMapping("/all") // -> http://ip:port/patient/all
 	public ResponseEntity<List<PatientDTO>> getAllPatients() {
 		Session session = config.getSession();
-		
+
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT {t1.*} ");
-		sql.append(" FROM AHPATIENT t1 "); 
+		sql.append(" FROM AHPATIENT t1 ");
 		sql.append(" WHERE t1.STATUS = '1' ");
-		
+
 		@SuppressWarnings("unchecked")
 		NativeQuery<Object[]> query = session.createSQLQuery(sql.toString());
 		query.addEntity("t1", PatientDTO.class);
-		
-		List<Object[]> result =query.list();
-	 
-//		List<AdmissionDTO> patientList = new ArrayList<>();
-//		
-//		for (Object[] objects : result) {
-//			AdmissionDTO  admissionDTO = (AdmissionDTO) objects[0];
-//			
-//			String organizationName = (String) objects[1];
-//			String doctorName = (String) objects[2];
-//			String doctorSurname = (String) objects[3];
-//			Long patientNo = (Long) objects[4];
-//			
-//			admissionDTO.setScalarOrganizationName(organizationName);
-//			admissionDTO.setScalarDoctorName(doctorName);
-//			admissionDTO.setScalarDoctorSurname(doctorSurname);
-//			admissionDTO.setPatientNo(patientNo);
-//			
-//			patientList.add(admissionDTO);
-//			
-//		}
-//		return new ResponseEntity<>(patientList, HttpStatus.OK);
-		
-		
-		return null;
+
+		List<Object[]> result = query.list();
+
+		List<PatientDTO> patientList = new ArrayList<>();
+		for (Object[] objects : result) {
+			PatientDTO patientDTO = (PatientDTO) objects[0];
+			patientList.add(patientDTO);
+
+		}
+		return new ResponseEntity<>(patientList, HttpStatus.OK);
+
 	}
-	
-	
-	
+
 }
