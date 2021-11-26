@@ -1,6 +1,7 @@
 # HisApp
 Java desktop application for Hospital Information System
 
+To install all external dependencies. run `install.bat`.
 
 `mvn install:install-file -Dfile=jdatepicker-1.3.2.jar -DgroupId=jdp -DartifactId=jdp -Dversion=1.3.2 -Dpackaging=jar`
 
