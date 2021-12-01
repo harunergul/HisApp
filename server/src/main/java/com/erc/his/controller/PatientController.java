@@ -30,15 +30,16 @@ public class PatientController {
 	@PostMapping("/save") // -> http://ip:port/patient/save
 	public ResponseEntity<PatientDTO> savePatient(@RequestBody PatientDTO patientDTO) {
 		Session session = config.getSession();
-
+		session.clear();
+		session.beginTransaction();
 		if (patientDTO.getPatientId() == null) {
 			patientDTO.setPatientId(config.generateID());
 			patientDTO.setStatus("1");
 			patientDTO.setPatientNo(dateFormatter.format(new Date()) + "/" + config.generateID());
-
+			session.save(patientDTO);
+		}else {
+			session.update(patientDTO);
 		}
-		session.beginTransaction();
-		session.save(patientDTO);
 		session.getTransaction().commit();
 		return new ResponseEntity<>(patientDTO, HttpStatus.OK);
 	}

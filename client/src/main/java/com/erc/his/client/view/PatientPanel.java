@@ -123,6 +123,12 @@ public class PatientPanel extends MainPanel {
 				dialog.setSize(560, 250);
 				dialog.setPatient(patient);
 				dialog.setVisible(true);
+				
+				if (dialog.dialogResult != null) {
+					PatientDTO patientDTO = dialog.dialogResult.patientDTO;
+					patientTableModel.getListData().set(selectedRow, patientDTO);
+					patientTableModel.fireTableDataChanged();
+				}
 
 			} else if (cmd.equals(DELETE_EVENT)) {
 

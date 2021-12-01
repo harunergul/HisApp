@@ -206,32 +206,23 @@ public class AddPatientDialog extends MainDialog {
 		addEvents();
 
 	}
-	
+
 	public void setPatient(PatientDTO patient) {
 		this.patient = patient;
-		
-		if(patient!=null) {
+
+		if (patient != null) {
 			txtPatientNo.setText(patient.getPatientNo());
 			txtFirstName.setText(patient.getFirstName());
 			txtLastName.setText(patient.getLastName());
 			txtIdentificationNo.setText(patient.getIdentificationNo());
-			
+
 			birthDateDatePicker.setDate(patient.getBirthDate());
-//			BloodGroup[] values = BloodGroup.values();
-//			for (BloodGroup bloodGroup : values) {
-//				if(bloodGroup.equals(patient.getBloodGroup()));
-//			}
-//			patient.getBloodGroup();
-//			
 			cbBloodGroup.setSelectedItem(patient.getBloodGroup());
 			cbGender.setSelectedItem(patient.getGender());
 			cbMaritalStatus.setSelectedItem(patient.getMaritalStatus());
 		}
-		
-		
-		
+
 	}
-	
 
 	private void addEvents() {
 		AddPatientDialogEventListener listener = new AddPatientDialogEventListener();
@@ -250,7 +241,7 @@ public class AddPatientDialog extends MainDialog {
 			this.patientDTO = patientDTO;
 		}
 	}
-	
+
 	private class AddPatientDialogEventListener implements ActionListener {
 
 		@Override
@@ -258,7 +249,13 @@ public class AddPatientDialog extends MainDialog {
 			String cmd = e.getActionCommand();
 
 			if (cmd.equals(SAVE_EVENT)) {
-				PatientDTO patientDTO = new PatientDTO();
+				PatientDTO patientDTO;
+				
+				if (patient != null) {
+					patientDTO = patient;
+				} else {
+					patientDTO = new PatientDTO();
+				}
 
 				String firstName = txtFirstName.getText();
 				String lastName = txtLastName.getText();
