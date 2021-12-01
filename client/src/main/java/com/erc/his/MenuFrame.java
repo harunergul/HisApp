@@ -1,10 +1,8 @@
 package com.erc.his;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
@@ -12,7 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -111,40 +108,31 @@ public class MenuFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println(e.getActionCommand());
-
 			userMenus.stream().filter(a -> a.subMenus.size() > 0).anyMatch(userMenu -> {
-				System.out.println("");
-				Optional<UserSubMenu> ab = userMenu.subMenus.stream().filter(aa -> aa.getActionCommand().equals(e.getActionCommand())).findFirst();
-				boolean  present = ab.isPresent();
+				Optional<UserSubMenu> ab = userMenu.subMenus.stream()
+						.filter(aa -> aa.getActionCommand().equals(e.getActionCommand())).findFirst();
+				boolean present = ab.isPresent();
 				ab.ifPresent(menu -> {
 					addPanelToScreen(menu.getClazz());
 				});
 				return present;
 			});
 
-//			for (UserMenu userMenu : userMenus) {
-//				Optional<UserSubMenu> ab = userMenu.subMenus.stream()
-//						.filter(aa -> aa.getActionCommand().equals(e.getActionCommand())).findFirst();
-//
-//				ab.ifPresent(menu -> addPanelToScreen(menu.getClazz()));
-//			}
-
 		}
 
+		@SuppressWarnings("unchecked")
 		private void addPanelToScreen(Class<? extends JPanel> panel) {
 			contentPanel.removeAll();
 			contentPanel.setLayout(new BorderLayout());
 			if (panel != null) {
 
-				try {
-					Class<? extends JPanel> c = (Class<? extends JPanel>) Class.forName(panel.getCanonicalName());
-					Constructor<?> ctor = c.getConstructor();
+				try { 
+					Class<? extends JPanel> clazz = (Class<? extends JPanel>) Class.forName(panel.getCanonicalName());
+					Constructor<?> ctor = clazz.getConstructor();
 					JPanel object = (JPanel) ctor.newInstance(new Object[] {});
 					contentPanel.add(object, BorderLayout.CENTER);
 				} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
 						| IllegalArgumentException | InvocationTargetException | ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
