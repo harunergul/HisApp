@@ -108,14 +108,13 @@ public class MenuFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			userMenus.stream().filter(a -> a.subMenus.size() > 0).anyMatch(userMenu -> {
-				Optional<UserSubMenu> ab = userMenu.subMenus.stream()
-						.filter(aa -> aa.getActionCommand().equals(e.getActionCommand())).findFirst();
-				boolean present = ab.isPresent();
-				ab.ifPresent(menu -> {
+			userMenus.stream().filter(userMenu -> userMenu.subMenus.size() > 0).anyMatch(userMenu -> {
+				Optional<UserSubMenu> subMenu = userMenu.subMenus.stream()
+						.filter(subMenuItem -> subMenuItem.getActionCommand().equals(e.getActionCommand())).findFirst();
+				subMenu.ifPresent(menu -> {
 					addPanelToScreen(menu.getClazz());
 				});
-				return present;
+				return subMenu.isPresent();
 			});
 
 		}
@@ -126,7 +125,7 @@ public class MenuFrame extends JFrame {
 			contentPanel.setLayout(new BorderLayout());
 			if (panel != null) {
 
-				try { 
+				try {
 					Class<? extends JPanel> clazz = (Class<? extends JPanel>) Class.forName(panel.getCanonicalName());
 					Constructor<?> ctor = clazz.getConstructor();
 					JPanel object = (JPanel) ctor.newInstance(new Object[] {});
