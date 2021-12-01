@@ -105,7 +105,7 @@ public class PatientPanel extends MainPanel {
 
 				if (dialog.dialogResult != null) {
 					PatientDTO patientDTO = dialog.dialogResult.patientDTO;
-					patientTableModel.getListData().add(patientDTO); 
+					patientTableModel.getListData().add(patientDTO);
 					patientTableModel.fireTableDataChanged();
 				}
 
@@ -116,14 +116,14 @@ public class PatientPanel extends MainPanel {
 					showWarning("Please select a row for update operation!");
 					return;
 				}
-				
+
 				PatientDTO patient = patientTableModel.getListData().get(selectedRow);
 				AddPatientDialog dialog = new AddPatientDialog();
 				dialog.setModal(true);
 				dialog.setSize(560, 250);
 				dialog.setPatient(patient);
 				dialog.setVisible(true);
-				
+
 				if (dialog.dialogResult != null) {
 					PatientDTO patientDTO = dialog.dialogResult.patientDTO;
 					patientTableModel.getListData().set(selectedRow, patientDTO);
@@ -131,6 +131,22 @@ public class PatientPanel extends MainPanel {
 				}
 
 			} else if (cmd.equals(DELETE_EVENT)) {
+				int selectedRow = patientTable.getSelectedRow();
+				if (selectedRow == -1) {
+					showWarning("Please select a row for delete operation!");
+					return;
+				}
+
+				PatientDTO patientDTO = patientTableModel.getListData().get(selectedRow);
+				try {
+					serviceHelper.deletePatient(patientDTO);
+					patientTableModel.getListData().remove(patientDTO);
+					patientTableModel.fireTableDataChanged();
+				} catch (Exception ee) {
+					ee.printStackTrace();
+					showError("Cannot delete patient!");
+
+				}
 
 			}
 

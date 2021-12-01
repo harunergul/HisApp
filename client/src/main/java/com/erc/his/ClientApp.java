@@ -67,6 +67,10 @@ public class ClientApp {
 		return convertToList(patients);
 	}
 
+	public void deletePatient(PatientDTO patientDTO) { 
+		postRequest("/patient/delete", PatientDTO.class, gson.toJson(patientDTO));
+	}
+	
 	private <T> ArrayList<T> convertToList(T[] entities) {
 		ArrayList<T> list = new ArrayList<T>();
 
