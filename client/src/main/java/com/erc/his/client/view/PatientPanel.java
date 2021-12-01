@@ -102,7 +102,27 @@ public class PatientPanel extends MainPanel {
 				dialog.setModal(true);
 				dialog.setSize(560, 250);
 				dialog.setVisible(true);
+
+				if (dialog.dialogResult != null) {
+					PatientDTO patientDTO = dialog.dialogResult.patientDTO;
+					patientTableModel.getListData().add(patientDTO); 
+					patientTableModel.fireTableDataChanged();
+				}
+
 			} else if (cmd.equals(UPDATE_EVENT)) {
+
+				int selectedRow = patientTable.getSelectedRow();
+				if (selectedRow == -1) {
+					showWarning("Please select a row for update operation!");
+					return;
+				}
+				
+				PatientDTO patient = patientTableModel.getListData().get(selectedRow);
+				AddPatientDialog dialog = new AddPatientDialog();
+				dialog.setModal(true);
+				dialog.setSize(560, 250);
+				dialog.setPatient(patient);
+				dialog.setVisible(true);
 
 			} else if (cmd.equals(DELETE_EVENT)) {
 
@@ -111,5 +131,4 @@ public class PatientPanel extends MainPanel {
 		}
 
 	}
-
 }

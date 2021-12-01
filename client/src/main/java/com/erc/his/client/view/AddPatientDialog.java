@@ -38,6 +38,9 @@ public class AddPatientDialog extends MainDialog {
 	private final String CANCEL_EVENT = "CANCEL_EVENT";
 	private final ClientApp serviceHelper = new ClientApp();
 
+	private PatientDTO patient;
+	public AddPatientDialogResult dialogResult;
+
 	public AddPatientDialog() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 0, 0, 5, 0, 0, 100, 100, 0, 0 };
@@ -72,7 +75,6 @@ public class AddPatientDialog extends MainDialog {
 		gbc_lblMaritalStatus.gridy = 1;
 		add(lblMaritalStatus, gbc_lblMaritalStatus);
 
-		
 		GridBagConstraints gbc_cbMaritalStatus = new GridBagConstraints();
 		gbc_cbMaritalStatus.gridwidth = 3;
 		gbc_cbMaritalStatus.insets = new Insets(0, 0, 5, 5);
@@ -139,7 +141,6 @@ public class AddPatientDialog extends MainDialog {
 		gbc_lblGender.gridy = 3;
 		add(lblGender, gbc_lblGender);
 
-
 		GridBagConstraints gbc_cbGender = new GridBagConstraints();
 		gbc_cbGender.gridwidth = 3;
 		gbc_cbGender.insets = new Insets(0, 0, 5, 5);
@@ -194,20 +195,43 @@ public class AddPatientDialog extends MainDialog {
 		gbc_btnCancel.gridy = 6;
 		add(btnCancel, gbc_btnCancel);
 
-		
 		cbMaritalStatus.addItem(choose);
 		cbBloodGroup.addItem(choose);
 		cbGender.addItem(choose);
-		
+
 		MaritalStatus.getAll().stream().forEach(item -> cbMaritalStatus.addItem(item));
-		BloodGroup.getAll().stream().forEach(item-> cbBloodGroup.addItem(item));
-		Gender.getAll().stream().forEach(item-> cbGender.addItem(item));
-		
+		BloodGroup.getAll().stream().forEach(item -> cbBloodGroup.addItem(item));
+		Gender.getAll().stream().forEach(item -> cbGender.addItem(item));
 
 		addEvents();
-		
 
 	}
+	
+	public void setPatient(PatientDTO patient) {
+		this.patient = patient;
+		
+		if(patient!=null) {
+			txtPatientNo.setText(patient.getPatientNo());
+			txtFirstName.setText(patient.getFirstName());
+			txtLastName.setText(patient.getLastName());
+			txtIdentificationNo.setText(patient.getIdentificationNo());
+			
+			birthDateDatePicker.setDate(patient.getBirthDate());
+//			BloodGroup[] values = BloodGroup.values();
+//			for (BloodGroup bloodGroup : values) {
+//				if(bloodGroup.equals(patient.getBloodGroup()));
+//			}
+//			patient.getBloodGroup();
+//			
+			cbBloodGroup.setSelectedItem(patient.getBloodGroup());
+			cbGender.setSelectedItem(patient.getGender());
+			cbMaritalStatus.setSelectedItem(patient.getMaritalStatus());
+		}
+		
+		
+		
+	}
+	
 
 	private void addEvents() {
 		AddPatientDialogEventListener listener = new AddPatientDialogEventListener();
@@ -219,6 +243,14 @@ public class AddPatientDialog extends MainDialog {
 
 	}
 
+	class AddPatientDialogResult {
+		public PatientDTO patientDTO;
+
+		public AddPatientDialogResult(PatientDTO patientDTO) {
+			this.patientDTO = patientDTO;
+		}
+	}
+	
 	private class AddPatientDialogEventListener implements ActionListener {
 
 		@Override
@@ -231,11 +263,10 @@ public class AddPatientDialog extends MainDialog {
 				String firstName = txtFirstName.getText();
 				String lastName = txtLastName.getText();
 				String identificationNo = txtIdentificationNo.getText();
-				String bloodGroup = (String)cbBloodGroup.getSelectedItem();
-				String maritalStatus = (String)cbMaritalStatus.getSelectedItem();
-				String gender =(String) cbGender.getSelectedItem();
-				Date birthDate =  birthDateDatePicker.getDate();
-				
+				String bloodGroup = (String) cbBloodGroup.getSelectedItem();
+				String maritalStatus = (String) cbMaritalStatus.getSelectedItem();
+				String gender = (String) cbGender.getSelectedItem();
+				Date birthDate = birthDateDatePicker.getDate();
 
 				if (firstName.contentEquals("")) {
 					showWarning("Please fill patient name!");
@@ -252,39 +283,46 @@ public class AddPatientDialog extends MainDialog {
 					return;
 				}
 
-				if(cbBloodGroup.getSelectedIndex()==0) {
+				if (cbBloodGroup.getSelectedIndex() == 0) {
 					showWarning("Please select blood group!");
 					return;
 				}
-				
-				if(cbMaritalStatus.getSelectedIndex()==0) {
+
+				if (cbMaritalStatus.getSelectedIndex() == 0) {
 					showWarning("Please select marital status!");
 					return;
 				}
-				
-				if(cbGender.getSelectedIndex()==0) {
+
+				if (cbGender.getSelectedIndex() == 0) {
 					showWarning("Please select patient gender!");
 					return;
 				}
-				
-				if(birthDateDatePicker.getDate()==null) {
+
+				if (birthDateDatePicker.getDate() == null) {
 					showWarning("Please select birth date!");
 					return;
 				}
-				
+
 				patientDTO.setFirstName(firstName);
 				patientDTO.setLastName(lastName);
 				patientDTO.setIdentificationNo(identificationNo);
 				patientDTO.setBloodGroup(bloodGroup);
 				patientDTO.setGender(gender);
 				patientDTO.setMaritalStatus(maritalStatus);
+				patientDTO.setBirthDate(birthDate);
 
 				try {
 					patientDTO = serviceHelper.savePatient(patientDTO);
+					txtPatientNo.setText(patientDTO.getPatientNo());
+					dialogResult = new AddPatientDialogResult(patientDTO);
+					showSuccess("Successfully created.");
+					dispose();
+
 				} catch (Exception e1) {
 					showError("Error during the saving!");
 					e1.printStackTrace();
 				}
+
 			} else if (cmd.equals(CANCEL_EVENT)) {
 				dispose();
 			}

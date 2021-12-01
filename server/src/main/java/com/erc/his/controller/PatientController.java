@@ -1,6 +1,8 @@
 package com.erc.his.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -21,6 +23,7 @@ import com.erc.his.entity.PatientDTO;
 @RequestMapping("/patient")
 public class PatientController {
 
+	private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy");
 	@Autowired
 	private HibernateConfig config;
 
@@ -31,8 +34,12 @@ public class PatientController {
 		if (patientDTO.getPatientId() == null) {
 			patientDTO.setPatientId(config.generateID());
 			patientDTO.setStatus("1");
+			patientDTO.setPatientNo(dateFormatter.format(new Date()) + "/" + config.generateID());
+
 		}
+		session.beginTransaction();
 		session.save(patientDTO);
+		session.getTransaction().commit();
 		return new ResponseEntity<>(patientDTO, HttpStatus.OK);
 	}
 
@@ -46,16 +53,14 @@ public class PatientController {
 		sql.append(" WHERE t1.STATUS = '1' ");
 
 		@SuppressWarnings("unchecked")
-		NativeQuery<Object[]> query = session.createSQLQuery(sql.toString());
+		NativeQuery<PatientDTO> query = session.createSQLQuery(sql.toString());
 		query.addEntity("t1", PatientDTO.class);
 
-		List<Object[]> result = query.list();
+		List<PatientDTO> results = query.list();
 
 		List<PatientDTO> patientList = new ArrayList<>();
-		for (Object[] objects : result) {
-			PatientDTO patientDTO = (PatientDTO) objects[0];
-			patientList.add(patientDTO);
-
+		for (PatientDTO patient : results) {
+			patientList.add(patient);
 		}
 		return new ResponseEntity<>(patientList, HttpStatus.OK);
 
