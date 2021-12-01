@@ -1,6 +1,11 @@
 package com.erc.his.entity;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -100,8 +105,28 @@ public class PatientDTO implements Serializable {
 	}
 
 	@JsonIgnore
-	public int getCalculatedAge() {
-		return 45;
+	public String getCalculatedAge() {
+		if (getBirthDate() == null)
+			return null;
+		Instant instant = getBirthDate().toInstant();
+		ZonedDateTime zone = instant.atZone(ZoneId.systemDefault());
+		LocalDate birthDate = zone.toLocalDate();
+		Period period = Period.between(birthDate, LocalDate.now());
+		StringBuffer buffer = new StringBuffer();
+		if(period.getYears()>0) {
+			buffer.append(period.getYears());
+			buffer.append("y ");
+			
+		}
+		if(period.getMonths()>0) {
+			buffer.append(period.getMonths());
+			buffer.append("m ");
+		}
+		if(period.getDays()>0 && period.getYears()==0) {
+			buffer.append(period.getDays());
+			buffer.append("d ");
+		}
+		return buffer.toString();
 	}
 
 }

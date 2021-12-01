@@ -1,5 +1,10 @@
 package com.erc.his.client.view;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +49,7 @@ public class PatientTableModel extends AbstractTableModel {
 			return patientDTO.getIdentificationNo();
 		case 3:
 			return patientDTO.getBirthDate();
-		case 4:
+		case 4: 
 			return patientDTO.getCalculatedAge();
 		case 5:
 			return patientDTO.getGender();
