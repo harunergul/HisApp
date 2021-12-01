@@ -1,41 +1,53 @@
 package com.erc.his;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.erc.his.client.view.PatientPanel;
+import com.erc.his.client.view.organization.OrganizationPanel;
+import com.erc.his.menu.UserMenu;
+import com.erc.his.menu.UserSubMenu;
 
 public class MenuFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	private static Frame instance = null;
-	private JMenu mnDefntons;
-	private JMenuItem menuOrganization;
-	private JMenuItem menuAppellation;
-	private JMenuItem menuStaff;
-
-	private JMenuBar menuBar;
-	private JMenu mnMenu;
-	private JMenuItem menuPatient;
-	private JMenu mnStaff;
-	private JMenu mnNewMenu;
-	private JMenuItem menuAppointment;
-
-	private JMenu mnAdmission;
-	private JMenuItem menuPatientAdmission;
+	private JPanel toolbarPanel = new JPanel();
+	private JPanel contentPanel = new JPanel();
 
 	public MenuFrame() {
-		setSize(1942, 1097);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		toolbarPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		contentPanel.setLayout(new BorderLayout());
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+
+		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
 	}
 
@@ -54,87 +66,90 @@ public class MenuFrame extends JFrame {
 		frame.setVisible(true);
 	}
 
-	public static Frame getInstance() {
-		return instance;
-	}
-
 	private void addMenuBar() {
-		menuBar = new JMenuBar();
-		menuBar.setBackground(new Color(204, 204, 255));
-		setJMenuBar(menuBar);
 
-		mnMenu = new JMenu("PATIENT");
-		mnMenu.setFont(new Font("Century Gothic", Font.BOLD, 12));
-		menuBar.add(mnMenu);
+		List<UserMenu> userMenus = getUserMenus();
+		JMenuBar toolbar = new JMenuBar();
 
-		menuPatient = new JMenuItem("PRS001: Patient Information Screen");
-		menuPatient.setFont(new Font("Century Gothic", Font.PLAIN, 10));
-		mnMenu.add(menuPatient);
+		MenuEventListener eventListener = new MenuEventListener(userMenus);
+		userMenus.stream().forEach(item -> {
+			JMenu menu = new JMenu(item.menuName);
+			toolbar.add(menu);
 
-		mnStaff = new JMenu("STAFF");
-		mnStaff.setFont(new Font("Century Gothic", Font.BOLD, 12));
-		menuBar.add(mnStaff);
+			item.subMenus.forEach(subMenu -> {
+				JMenuItem menuItem = new JMenuItem(subMenu.getMenuName());
+				menuItem.setActionCommand(subMenu.getActionCommand());
+				menuItem.setFont(new Font("Century Gothic", Font.PLAIN, 10));
+				menu.add(menuItem);
+				menuItem.addActionListener(eventListener);
+			});
+		});
 
-		menuStaff = new JMenuItem("STAFF TABLE");
-		mnStaff.add(menuStaff);
-		menuStaff.setFont(new Font("Century Gothic", Font.PLAIN, 10));
+		toolbarPanel.add(toolbar);
 
-		mnNewMenu = new JMenu("APPOINTMENT");
-		mnNewMenu.setFont(new Font("Century Gothic", Font.BOLD, 12));
-		menuBar.add(mnNewMenu);
-
-		menuAppointment = new JMenuItem("APPOINTMENT OPERATIONS");
-		menuAppointment.setFont(new Font("Century Gothic", Font.PLAIN, 10));
-		mnNewMenu.add(menuAppointment);
-
-		mnDefntons = new JMenu("DEFINITIONS");
-		mnDefntons.setFont(new Font("Century Gothic", Font.BOLD, 12));
-		menuBar.add(mnDefntons);
-
-		menuOrganization = new JMenuItem("ORGANIZATION");
-		menuOrganization.setFont(new Font("Century Gothic", Font.PLAIN, 10));
-		mnDefntons.add(menuOrganization);
-
-		menuAppellation = new JMenuItem("APPELLATION");
-		menuAppellation.setFont(new Font("Century Gothic", Font.PLAIN, 10));
-		mnDefntons.add(menuAppellation);
-
-		mnAdmission = new JMenu("ADMISSION");
-		mnAdmission.setFont(new Font("Century Gothic", Font.BOLD, 12));
-		menuBar.add(mnAdmission);
-
-		menuPatientAdmission = new JMenuItem("ADMISSION OPERATIONS");
-		menuPatientAdmission.setFont(new Font("Century Gothic", Font.PLAIN, 10));
-		mnAdmission.add(menuPatientAdmission);
-
-		clickMenuItem();
 	}
 
-	public void clickMenuItem() {
-		menuPatient.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PatientPanel panel = new PatientPanel();
-				removeAll();
-				add(panel);
-				setLocationRelativeTo(null);
-				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				setExtendedState(JFrame.MAXIMIZED_BOTH);
-				setVisible(true);
+	private List<UserMenu> getUserMenus() {
+		UserMenu patientMenu = new UserMenu("Patient");
+		patientMenu.subMenus.add(new UserSubMenu("Prs001: Patient Screen", PatientPanel.class));
+
+		UserMenu settingsMenu = new UserMenu("Settings");
+		settingsMenu.subMenus.add(new UserSubMenu("Organizations", OrganizationPanel.class));
+
+		List<UserMenu> menuList = new ArrayList<UserMenu>();
+		menuList.add(patientMenu);
+		menuList.add(settingsMenu);
+		return menuList;
+	}
+
+	private class MenuEventListener implements ActionListener {
+		private List<UserMenu> userMenus;
+
+		public MenuEventListener(List<UserMenu> userMenus) {
+			this.userMenus = userMenus;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println(e.getActionCommand());
+
+			userMenus.stream().filter(a -> a.subMenus.size() > 0).anyMatch(userMenu -> {
+				System.out.println("");
+				Optional<UserSubMenu> ab = userMenu.subMenus.stream().filter(aa -> aa.getActionCommand().equals(e.getActionCommand())).findFirst();
+				boolean  present = ab.isPresent();
+				ab.ifPresent(menu -> {
+					addPanelToScreen(menu.getClazz());
+				});
+				return present;
+			});
+
+//			for (UserMenu userMenu : userMenus) {
+//				Optional<UserSubMenu> ab = userMenu.subMenus.stream()
+//						.filter(aa -> aa.getActionCommand().equals(e.getActionCommand())).findFirst();
+//
+//				ab.ifPresent(menu -> addPanelToScreen(menu.getClazz()));
+//			}
+
+		}
+
+		private void addPanelToScreen(Class<? extends JPanel> panel) {
+			contentPanel.removeAll();
+			contentPanel.setLayout(new BorderLayout());
+			if (panel != null) {
+
+				try {
+					Class<? extends JPanel> c = (Class<? extends JPanel>) Class.forName(panel.getCanonicalName());
+					Constructor<?> ctor = c.getConstructor();
+					JPanel object = (JPanel) ctor.newInstance(new Object[] {});
+					contentPanel.add(object, BorderLayout.CENTER);
+				} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException | ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		});
-		
-		
-		mnStaff.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-//				StaffPanel panel = new StaffPanel();
-//				getContentPane().removeAll();
-//				getContentPane().add(panel);
-//				setLocationRelativeTo(null);
-//				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//				setExtendedState(JFrame.MAXIMIZED_BOTH);
-//				setVisible(true);
-			}
-		});
+			contentPanel.revalidate();
+		}
 
 	}
 }

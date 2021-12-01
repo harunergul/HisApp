@@ -101,6 +101,7 @@ public class PatientPanel extends MainPanel {
 				AddPatientDialog dialog = new AddPatientDialog();
 				dialog.setModal(true);
 				dialog.setSize(560, 250);
+				dialog.setLocationRelativeTo(null);
 				dialog.setVisible(true);
 
 				if (dialog.dialogResult != null) {
@@ -122,6 +123,7 @@ public class PatientPanel extends MainPanel {
 				dialog.setModal(true);
 				dialog.setSize(560, 250);
 				dialog.setPatient(patient);
+				dialog.setLocationRelativeTo(null);
 				dialog.setVisible(true);
 
 				if (dialog.dialogResult != null) {

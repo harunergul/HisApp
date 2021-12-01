@@ -4,7 +4,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class MainDialog extends JDialog{
+public class MainDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 
 	public void showWarning(String message) {
