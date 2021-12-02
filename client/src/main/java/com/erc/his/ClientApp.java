@@ -12,6 +12,7 @@ import java.util.Date;
 import org.json.JSONObject;
 
 import com.erc.his.entity.AdmissionDTO;
+import com.erc.his.entity.CodeDefinitionDTO;
 import com.erc.his.entity.PatientDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,10 +64,16 @@ public class ClientApp {
 
 	public ArrayList<PatientDTO> getAllPatients() {
 		PatientDTO[] patients = httpGetMethod("/patient/all", PatientDTO[].class);
-		convertToList(patients);
-		return convertToList(patients);
+ 		return convertToList(patients);
 	}
 
+	public ArrayList<CodeDefinitionDTO> getAllCodeDefinitions() {
+		CodeDefinitionDTO[] codeDefinitions = httpGetMethod("/code-definition/all", CodeDefinitionDTO[].class);
+		return convertToList(codeDefinitions);
+	}
+
+	
+	
 	public void deletePatient(PatientDTO patientDTO) { 
 		postRequest("/patient/delete", PatientDTO.class, gson.toJson(patientDTO));
 	}
@@ -182,4 +189,12 @@ public class ClientApp {
 		return postRequest("/patient/save", PatientDTO.class, gson.toJson(patientDTO));
 	}
 
+	public CodeDefinitionDTO saveCodeDefinition(CodeDefinitionDTO entity) throws Exception {
+		return postRequest("/code-definition/save", CodeDefinitionDTO.class, gson.toJson(entity));
+	}
+
+	public void deleteCodeDefinition(CodeDefinitionDTO codeDefinitionDTO) {
+		postRequest("/code-definition/delete", CodeDefinitionDTO.class, gson.toJson(codeDefinitionDTO));
+	}
+	
 }
