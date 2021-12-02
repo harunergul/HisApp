@@ -3,6 +3,7 @@ package com.erc.his;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -21,8 +22,7 @@ import com.google.gson.GsonBuilder;
 
 public class ClientApp {
 
-	private Gson gson = new GsonBuilder().
-			registerTypeAdapter(Date.class, new DateSerializer()).create();
+	private Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateSerializer()).create();
 
 	public static void main(String... args) {
 
@@ -50,7 +50,7 @@ public class ClientApp {
 		return postUpdateRequest("/admission/create", AdmissionDTO.class, convertObjectToJson(json));
 	}
 
-	public AdmissionDTO[] getAllAdmission() {
+	public AdmissionDTO[] getAllAdmission() throws Exception {
 		return httpGetMethod("/admission", AdmissionDTO[].class);
 	}
 
@@ -62,22 +62,20 @@ public class ClientApp {
 		return postUpdateRequest("/admission/delete", AdmissionDTO.class, convertObjectToJson(admissionDTO));
 	}
 
-	public ArrayList<PatientDTO> getAllPatients() {
+	public ArrayList<PatientDTO> getAllPatients() throws Exception {
 		PatientDTO[] patients = httpGetMethod("/patient/all", PatientDTO[].class);
- 		return convertToList(patients);
+		return convertToList(patients);
 	}
 
-	public ArrayList<CodeDefinitionDTO> getAllCodeDefinitions() {
+	public ArrayList<CodeDefinitionDTO> getAllCodeDefinitions() throws Exception {
 		CodeDefinitionDTO[] codeDefinitions = httpGetMethod("/code-definition/all", CodeDefinitionDTO[].class);
 		return convertToList(codeDefinitions);
 	}
 
-	
-	
-	public void deletePatient(PatientDTO patientDTO) { 
+	public void deletePatient(PatientDTO patientDTO) throws Exception {
 		postRequest("/patient/delete", PatientDTO.class, gson.toJson(patientDTO));
 	}
-	
+
 	private <T> ArrayList<T> convertToList(T[] entities) {
 		ArrayList<T> list = new ArrayList<T>();
 
@@ -92,7 +90,7 @@ public class ClientApp {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T httpGetMethod(String pathUrl, Class<T> clazz) {
+	public <T> T httpGetMethod(String pathUrl, Class<T> clazz) throws Exception {
 
 		URL url;
 		try {
@@ -101,15 +99,24 @@ public class ClientApp {
 			connection.setRequestProperty("accept", "application/json");
 			InputStream responseStream = connection.getInputStream();
 
-			if (responseStream.available() > 0) {
-				ObjectMapper mapper = new ObjectMapper();
-				Object apod = mapper.readValue(responseStream, clazz);
-				return (T) apod;
-			} else {
-				return null;
+			int responseCode = connection.getResponseCode();
+			if(responseCode==HttpURLConnection.HTTP_OK) {
+				if (responseStream.available() > 0) {
+					ObjectMapper mapper = new ObjectMapper();
+					Object apod = mapper.readValue(responseStream, clazz);
+					return (T) apod;
+				} else {
+					return null;
+				}
 			}
+			
+			
+			
 
-		} catch (IOException e) {
+		} catch (ConnectException ce) {
+			throw new Exception("Can not connect to the server");
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -117,7 +124,7 @@ public class ClientApp {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T postRequest(String pathUrl, Class<T> clazz, String data) {
+	private <T> T postRequest(String pathUrl, Class<T> clazz, String data) throws Exception {
 
 		URL url;
 		try {
@@ -135,12 +142,21 @@ public class ClientApp {
 				os.write(postData, 0, postData.length);
 			}
 
-			InputStream responseStream = connection.getInputStream();
-			ObjectMapper mapper = new ObjectMapper();
-			Object apod = mapper.readValue(responseStream, clazz);
-			return (T) apod;
+			int status = connection.getResponseCode();
 
+			if (status == HttpURLConnection.HTTP_OK) {
+				InputStream responseStream = connection.getInputStream();
+				ObjectMapper mapper = new ObjectMapper();
+				Object apod = mapper.readValue(responseStream, clazz);
+				return (T) apod;
+			} else if (status == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+				throw new Exception("HATA olustu");
+			}
+
+		} catch (ConnectException ce) {
+			throw new Exception("Can not connect to server!");
 		} catch (IOException e) {
+
 			e.printStackTrace();
 		}
 		return null;
@@ -193,8 +209,8 @@ public class ClientApp {
 		return postRequest("/code-definition/save", CodeDefinitionDTO.class, gson.toJson(entity));
 	}
 
-	public void deleteCodeDefinition(CodeDefinitionDTO codeDefinitionDTO) {
+	public void deleteCodeDefinition(CodeDefinitionDTO codeDefinitionDTO) throws Exception {
 		postRequest("/code-definition/delete", CodeDefinitionDTO.class, gson.toJson(codeDefinitionDTO));
 	}
-	
+
 }

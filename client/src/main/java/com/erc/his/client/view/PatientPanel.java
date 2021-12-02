@@ -74,9 +74,16 @@ public class PatientPanel extends MainPanel {
 	}
 
 	private void getAllPatients() {
-		ArrayList<PatientDTO> patientList = serviceHelper.getAllPatients();
-		patientTableModel.setListData(patientList);
-		patientTableModel.fireTableDataChanged();
+		ArrayList<PatientDTO> patientList;
+		try {
+			patientList = serviceHelper.getAllPatients();
+			patientTableModel.setListData(patientList);
+			patientTableModel.fireTableDataChanged();
+		} catch (Exception e) {
+			showError(e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void addEvents() {

@@ -72,9 +72,15 @@ public class CodeDefinitionPanel extends MainPanel {
 	}
 
 	private void getAllPatients() {
-		ArrayList<CodeDefinitionDTO> list = serviceHelper.getAllCodeDefinitions();
-		codeDefinitionTableModel.setListData(list);
-		codeDefinitionTableModel.fireTableDataChanged();
+		ArrayList<CodeDefinitionDTO> list;
+		try {
+			list = serviceHelper.getAllCodeDefinitions();
+			codeDefinitionTableModel.setListData(list);
+			codeDefinitionTableModel.fireTableDataChanged();
+		} catch (Exception e) {
+			showError(e.getLocalizedMessage());
+		}
+		
 	}
 
 	private void addEvents() {

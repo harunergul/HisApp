@@ -195,7 +195,7 @@ public class CodeDefinitionDialog extends MainDialog {
 					dispose();
 
 				} catch (Exception e1) {
-					showError("Error during the saving!");
+					showError(e1.getMessage());
 					e1.printStackTrace();
 				}
 
