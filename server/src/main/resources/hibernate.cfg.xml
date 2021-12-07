@@ -26,6 +26,7 @@
 		<mapping resource="com/erc/entity/organization.hbm.xml" />
 		-->
 		<mapping resource="com/erc/entity/codeDefinition.hbm.xml" />
+		<mapping resource="com/erc/entity/codeValue.hbm.xml" />
 		<mapping resource="com/erc/entity/patient.hbm.xml" />
 		
 	</session-factory>

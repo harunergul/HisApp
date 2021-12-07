@@ -38,14 +38,14 @@ public class CodeDefinitionController {
 	}
 
 	@PostMapping("/delete") // -> http://ip:port/code-definition/delete
-	public ResponseEntity<CodeDefinitionDTO> deletePatient(@RequestBody CodeDefinitionDTO codeDefinitionDTO) {
+	public ResponseEntity<CodeDefinitionDTO> delete(@RequestBody CodeDefinitionDTO codeDefinitionDTO) {
 		codeDefinitionDTO.setStatus("0");
 		config.update(codeDefinitionDTO);
 		return new ResponseEntity<>(codeDefinitionDTO, HttpStatus.OK);
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<List<CodeDefinitionDTO>> getAllPatients() {
+	public ResponseEntity<List<CodeDefinitionDTO>> getAllItems() {
 		Session session = config.getSession();
 
 		StringBuilder sql = new StringBuilder();
