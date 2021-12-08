@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.erc.his.entity.OrganizationDTO" table="AHORGANIZATION">
+
+		<id name="organizationId" column="ORGANIZATIONID" type="java.lang.Long">
+			<generator class="increment" />
+		</id>
+		<property name="code" column="CODE" type="java.lang.String" />
+		<property name="name" column="NAME" type="java.lang.String" />
+		<property name="status" column="STATUS" type="java.lang.String" />
+	</class>
+</hibernate-mapping>

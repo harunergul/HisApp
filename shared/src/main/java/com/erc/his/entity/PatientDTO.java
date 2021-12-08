@@ -1,6 +1,5 @@
 package com.erc.his.entity;
 
-import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
@@ -10,7 +9,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class PatientDTO implements Serializable {
+public class PatientDTO extends BaseEntity {
 
 	private static final long serialVersionUID = 6024551171120968334L;
 	private Long patientId;

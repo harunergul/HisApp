@@ -1,29 +1,30 @@
-package com.erc.his.client.view;
+package com.erc.his.client.view.definition.codedefinition;
 
-import java.awt.GridBagLayout;
-import javax.swing.JButton;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import com.erc.his.ClientApp;
 import com.erc.his.client.component.MainPanel;
-import com.erc.his.entity.PatientDTO;
+import com.erc.his.entity.CodeDefinitionDTO;
 
-import javax.swing.JScrollPane;
-
-public class PatientPanel extends MainPanel {
-
+public class CodeDefinitionPanel extends MainPanel {
 	private static final long serialVersionUID = -1536233362545908337L;
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnUpdate = new JButton("Update");
 	private JButton btnDelete = new JButton("Delete");
-	private final JTable patientTable = new JTable();
-	private final PatientTableModel patientTableModel = new PatientTableModel();
+	private final JTable codeDefinitionTable = new JTable();
+	private final CodeDefinitionTableModel codeDefinitionTableModel = new CodeDefinitionTableModel();
 	private final JScrollPane scrollPane = new JScrollPane();
 
 	private final String ADD_EVENT = "ADD_EVENT";
@@ -31,7 +32,7 @@ public class PatientPanel extends MainPanel {
 	private final String DELETE_EVENT = "DELETE_EVENT";
 	private final ClientApp serviceHelper = new ClientApp();
 
-	public PatientPanel() {
+	public CodeDefinitionPanel() {
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 5, 0, 0, 0, 0, 5, 0 };
@@ -65,8 +66,8 @@ public class PatientPanel extends MainPanel {
 		gbc_table.gridx = 1;
 		gbc_table.gridy = 2;
 		add(scrollPane, gbc_table);
-		patientTable.setModel(patientTableModel);
-		scrollPane.setViewportView(patientTable);
+		codeDefinitionTable.setModel(codeDefinitionTableModel);
+		scrollPane.setViewportView(codeDefinitionTable);
 
 		addEvents();
 		getAllPatients();
@@ -74,20 +75,19 @@ public class PatientPanel extends MainPanel {
 	}
 
 	private void getAllPatients() {
-		ArrayList<PatientDTO> patientList;
+		ArrayList<CodeDefinitionDTO> list;
 		try {
-			patientList = serviceHelper.getAllPatients();
-			patientTableModel.setListData(patientList);
-			patientTableModel.fireTableDataChanged();
+			list = serviceHelper.getAllCodeDefinitions();
+			codeDefinitionTableModel.setListData(list);
+			codeDefinitionTableModel.fireTableDataChanged();
 		} catch (Exception e) {
 			showError(e.getLocalizedMessage());
-			e.printStackTrace();
 		}
 		
 	}
 
 	private void addEvents() {
-		PatientPanelEventListener listener = new PatientPanelEventListener();
+		PanelEventListener listener = new PanelEventListener();
 		btnAdd.addActionListener(listener);
 		btnUpdate.addActionListener(listener);
 		btnDelete.addActionListener(listener);
@@ -95,65 +95,77 @@ public class PatientPanel extends MainPanel {
 		btnAdd.setActionCommand(ADD_EVENT);
 		btnUpdate.setActionCommand(UPDATE_EVENT);
 		btnDelete.setActionCommand(DELETE_EVENT);
+		
+		codeDefinitionTable.addMouseListener(new MouseAdapter() {
+			
+			public void mousePressed(MouseEvent mouseEvent) { 
+				Point point = mouseEvent.getPoint();
+				int row = codeDefinitionTable.rowAtPoint(point);
+				
+				if(codeDefinitionTable.getSelectedRow()!=-1) {
+					System.out.println(row);
+				}
+			}
+		});
 
 	}
 
-	private class PatientPanelEventListener implements ActionListener {
+	private class PanelEventListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();
 
 			if (cmd.equals(ADD_EVENT)) {
-				AddPatientDialog dialog = new AddPatientDialog();
+				CodeDefinitionDialog dialog = new CodeDefinitionDialog();
 				dialog.setModal(true);
 				dialog.setSize(560, 250);
 				dialog.setLocationRelativeTo(null);
 				dialog.setVisible(true);
 
 				if (dialog.dialogResult != null) {
-					PatientDTO patientDTO = dialog.dialogResult.patientDTO;
-					patientTableModel.getListData().add(patientDTO);
-					patientTableModel.fireTableDataChanged();
+					CodeDefinitionDTO codeDefinitionDTO = dialog.dialogResult.codeDefinitionDTO;
+					codeDefinitionTableModel.getListData().add(codeDefinitionDTO);
+					codeDefinitionTableModel.fireTableDataChanged();
 				}
 
 			} else if (cmd.equals(UPDATE_EVENT)) {
 
-				int selectedRow = patientTable.getSelectedRow();
+				int selectedRow = codeDefinitionTable.getSelectedRow();
 				if (selectedRow == -1) {
 					showWarning("Please select a row for update operation!");
 					return;
 				}
 
-				PatientDTO patient = patientTableModel.getListData().get(selectedRow);
-				AddPatientDialog dialog = new AddPatientDialog();
+				CodeDefinitionDTO codeDefinitionDTO = codeDefinitionTableModel.getListData().get(selectedRow);
+				CodeDefinitionDialog dialog = new CodeDefinitionDialog();
 				dialog.setModal(true);
 				dialog.setSize(560, 250);
-				dialog.setPatient(patient);
+				dialog.setCodeDefinition(codeDefinitionDTO);
 				dialog.setLocationRelativeTo(null);
 				dialog.setVisible(true);
 
 				if (dialog.dialogResult != null) {
-					PatientDTO patientDTO = dialog.dialogResult.patientDTO;
-					patientTableModel.getListData().set(selectedRow, patientDTO);
-					patientTableModel.fireTableDataChanged();
+					codeDefinitionDTO = dialog.dialogResult.codeDefinitionDTO;
+					codeDefinitionTableModel.getListData().set(selectedRow, codeDefinitionDTO);
+					codeDefinitionTableModel.fireTableDataChanged();
 				}
 
 			} else if (cmd.equals(DELETE_EVENT)) {
-				int selectedRow = patientTable.getSelectedRow();
+				int selectedRow = codeDefinitionTable.getSelectedRow();
 				if (selectedRow == -1) {
 					showWarning("Please select a row for delete operation!");
 					return;
 				}
 
-				PatientDTO patientDTO = patientTableModel.getListData().get(selectedRow);
+				CodeDefinitionDTO codeDefinitionDTO = codeDefinitionTableModel.getListData().get(selectedRow);
 				try {
-					serviceHelper.deletePatient(patientDTO);
-					patientTableModel.getListData().remove(patientDTO);
-					patientTableModel.fireTableDataChanged();
+					serviceHelper.deleteCodeDefinition(codeDefinitionDTO);
+					codeDefinitionTableModel.getListData().remove(codeDefinitionDTO);
+					codeDefinitionTableModel.fireTableDataChanged();
 				} catch (Exception ee) {
 					ee.printStackTrace();
-					showError("Cannot delete patient!");
+					showError("Cannot delete code definition!");
 
 				}
 
@@ -162,4 +174,6 @@ public class PatientPanel extends MainPanel {
 		}
 
 	}
+	
+
 }
