@@ -1,4 +1,4 @@
-package com.erc.his.client.view.codedefinition;
+package com.erc.his.client.view.definition.codevalue;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,22 +14,24 @@ import javax.swing.JTable;
 import com.erc.his.ClientApp;
 import com.erc.his.client.component.MainPanel;
 import com.erc.his.entity.CodeDefinitionDTO;
+import com.erc.his.entity.CodeValueDTO;
 
-public class CodeDefinitionPanel extends MainPanel {
+public class CodeValuePanel extends MainPanel {
 	private static final long serialVersionUID = -1536233362545908337L;
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnUpdate = new JButton("Update");
 	private JButton btnDelete = new JButton("Delete");
-	private final JTable codeDefinitionTable = new JTable();
-	private final CodeDefinitionTableModel codeDefinitionTableModel = new CodeDefinitionTableModel();
+	private final JTable codeValueTable = new JTable();
+	private final CodeValueTableModel codeValueTableModel = new CodeValueTableModel();
 	private final JScrollPane scrollPane = new JScrollPane();
 
 	private final String ADD_EVENT = "ADD_EVENT";
 	private final String UPDATE_EVENT = "UPDATE_EVENT";
 	private final String DELETE_EVENT = "DELETE_EVENT";
 	private final ClientApp serviceHelper = new ClientApp();
+	private CodeDefinitionDTO selectedCodeDefinitionDTO;
 
-	public CodeDefinitionPanel() {
+	public CodeValuePanel() {
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 5, 0, 0, 0, 0, 5, 0 };
@@ -63,24 +65,39 @@ public class CodeDefinitionPanel extends MainPanel {
 		gbc_table.gridx = 1;
 		gbc_table.gridy = 2;
 		add(scrollPane, gbc_table);
-		codeDefinitionTable.setModel(codeDefinitionTableModel);
-		scrollPane.setViewportView(codeDefinitionTable);
+		codeValueTable.setModel(codeValueTableModel);
+		scrollPane.setViewportView(codeValueTable);
 
-		addEvents();
-		getAllPatients();
+		addEvents(); 
+		updateBtns(false);
 
 	}
 
-	private void getAllPatients() {
-		ArrayList<CodeDefinitionDTO> list;
+	private void updateBtns(boolean isEnabled) {
+		btnAdd.setEnabled(isEnabled);
+		btnUpdate.setEnabled(isEnabled);
+		btnDelete.setEnabled(isEnabled);
+	}
+
+	public CodeDefinitionDTO getSelectedCodeDefinitionDTO() {
+		return selectedCodeDefinitionDTO;
+	}
+
+	public void setSelectedCodeDefinitionDTO(CodeDefinitionDTO selectedCodeDefinitionDTO) {
+		this.selectedCodeDefinitionDTO = selectedCodeDefinitionDTO;
+		updateBtns(true);
+	}
+
+	public void getAllCodeValuesByCodeDefinitionId(Long codeDefinitionId) {
+		ArrayList<CodeValueDTO> list;
 		try {
-			list = serviceHelper.getAllCodeDefinitions();
-			codeDefinitionTableModel.setListData(list);
-			codeDefinitionTableModel.fireTableDataChanged();
+			list = serviceHelper.getAllCodeValueByCodeDefinition(codeDefinitionId);
+			codeValueTableModel.setListData(list);
+			codeValueTableModel.fireTableDataChanged();
 		} catch (Exception e) {
 			showError(e.getLocalizedMessage());
 		}
-		
+
 	}
 
 	private void addEvents() {
@@ -102,28 +119,28 @@ public class CodeDefinitionPanel extends MainPanel {
 			String cmd = e.getActionCommand();
 
 			if (cmd.equals(ADD_EVENT)) {
-				CodeDefinitionDialog dialog = new CodeDefinitionDialog();
+				CodeValueDialog dialog = new CodeValueDialog();
 				dialog.setModal(true);
 				dialog.setSize(560, 250);
 				dialog.setLocationRelativeTo(null);
 				dialog.setVisible(true);
 
 				if (dialog.dialogResult != null) {
-					CodeDefinitionDTO codeDefinitionDTO = dialog.dialogResult.codeDefinitionDTO;
-					codeDefinitionTableModel.getListData().add(codeDefinitionDTO);
-					codeDefinitionTableModel.fireTableDataChanged();
+					CodeValueDTO codeValueDTO = dialog.dialogResult.codeValueDTO;
+					codeValueTableModel.getListData().add(codeValueDTO);
+					codeValueTableModel.fireTableDataChanged();
 				}
 
 			} else if (cmd.equals(UPDATE_EVENT)) {
 
-				int selectedRow = codeDefinitionTable.getSelectedRow();
+				int selectedRow = codeValueTable.getSelectedRow();
 				if (selectedRow == -1) {
 					showWarning("Please select a row for update operation!");
 					return;
 				}
 
-				CodeDefinitionDTO codeDefinitionDTO = codeDefinitionTableModel.getListData().get(selectedRow);
-				CodeDefinitionDialog dialog = new CodeDefinitionDialog();
+				CodeValueDTO codeDefinitionDTO = codeValueTableModel.getListData().get(selectedRow);
+				CodeValueDialog dialog = new CodeValueDialog();
 				dialog.setModal(true);
 				dialog.setSize(560, 250);
 				dialog.setCodeDefinition(codeDefinitionDTO);
@@ -131,26 +148,26 @@ public class CodeDefinitionPanel extends MainPanel {
 				dialog.setVisible(true);
 
 				if (dialog.dialogResult != null) {
-					codeDefinitionDTO = dialog.dialogResult.codeDefinitionDTO;
-					codeDefinitionTableModel.getListData().set(selectedRow, codeDefinitionDTO);
-					codeDefinitionTableModel.fireTableDataChanged();
+					codeDefinitionDTO = dialog.dialogResult.codeValueDTO;
+					codeValueTableModel.getListData().set(selectedRow, codeDefinitionDTO);
+					codeValueTableModel.fireTableDataChanged();
 				}
 
 			} else if (cmd.equals(DELETE_EVENT)) {
-				int selectedRow = codeDefinitionTable.getSelectedRow();
+				int selectedRow = codeValueTable.getSelectedRow();
 				if (selectedRow == -1) {
 					showWarning("Please select a row for delete operation!");
 					return;
 				}
 
-				CodeDefinitionDTO codeDefinitionDTO = codeDefinitionTableModel.getListData().get(selectedRow);
+				CodeValueDTO codeDefinitionDTO = codeValueTableModel.getListData().get(selectedRow);
 				try {
-					serviceHelper.deleteCodeDefinition(codeDefinitionDTO);
-					codeDefinitionTableModel.getListData().remove(codeDefinitionDTO);
-					codeDefinitionTableModel.fireTableDataChanged();
+					serviceHelper.deleteCodeValue(codeDefinitionDTO);
+					codeValueTableModel.getListData().remove(codeDefinitionDTO);
+					codeValueTableModel.fireTableDataChanged();
 				} catch (Exception ee) {
 					ee.printStackTrace();
-					showError("Cannot delete code definition!");
+					showError("Cannot delete code value!");
 
 				}
 

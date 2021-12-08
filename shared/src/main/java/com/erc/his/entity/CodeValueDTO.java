@@ -9,6 +9,7 @@ public class CodeValueDTO implements Serializable {
 	private Long codeValueId;
 	private Long codeDefinitionId;
 	private String code;
+	private String displayValue;
 	private String description;
 	private String active;
 	private String status;
@@ -60,5 +61,14 @@ public class CodeValueDTO implements Serializable {
 	public void setActive(String active) {
 		this.active = active;
 	}
+
+	public String getDisplayValue() {
+		return displayValue;
+	}
+
+	public void setDisplayValue(String displayValue) {
+		this.displayValue = displayValue;
+	}
+	
 
 }

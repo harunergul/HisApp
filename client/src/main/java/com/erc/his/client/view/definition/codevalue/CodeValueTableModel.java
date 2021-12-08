@@ -1,11 +1,10 @@
-package com.erc.his.client.view.codevalue;
+package com.erc.his.client.view.definition.codevalue;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.erc.his.entity.CodeDefinitionDTO;
 import com.erc.his.entity.CodeValueDTO;
 
 public class CodeValueTableModel extends AbstractTableModel {
@@ -14,7 +13,7 @@ public class CodeValueTableModel extends AbstractTableModel {
 
 	private List<CodeValueDTO> listData = new ArrayList<>();
 
-	String[] columnName = { "Code", "Description", "Is Active" };
+	String[] columnName = { "Code Value","Display Value", "Description", "Is Active" };
 
 	@Override
 	public int getRowCount() {
@@ -39,8 +38,10 @@ public class CodeValueTableModel extends AbstractTableModel {
 		case 0:
 			return codeDefinitionDTO.getCode();
 		case 1:
-			return codeDefinitionDTO.getDescription();
+			return codeDefinitionDTO.getDisplayValue();
 		case 2:
+			return codeDefinitionDTO.getDescription();
+		case 3:
 			return codeDefinitionDTO.getActive().equals("1") ? "ACTIVE" : "PASSIVE";
 
 		default:

@@ -1,4 +1,4 @@
-package com.erc.his.client.view.codedefinition;
+package com.erc.his.client.view.definition.codedefinition;
 
 import java.util.ArrayList;
 import java.util.List;

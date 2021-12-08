@@ -1,4 +1,4 @@
-package com.erc.his.client.view.codevalue;
+package com.erc.his.client.view.definition.codevalue;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -33,13 +33,14 @@ public class CodeValueDialog extends MainDialog {
 	public CodeValueDialogResult dialogResult;
 	private CodeValueDTO codeValue;
 	private Long codeDefinitionId;
+	private JTextField txtDisplayValue;
 
 	public CodeValueDialog() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 5, 150, 5, 97, 100, 100, 5, 0 };
-		gridBagLayout.rowHeights = new int[] { 5, 0, 0, 0, 5, 0, 5, 0 };
+		gridBagLayout.rowHeights = new int[] { 5, 0, 0, 0, 0, 5, 0, 5, 0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		getContentPane().setLayout(gridBagLayout);
 
 		JLabel lblCodeValue = new JLabel("Code Value");
@@ -59,13 +60,31 @@ public class CodeValueDialog extends MainDialog {
 		gbc_txtCode.gridy = 1;
 		getContentPane().add(txtCode, gbc_txtCode);
 		txtCode.setColumns(10);
+		
+		JLabel lblDisplayValue = new JLabel("Display Value");
+		GridBagConstraints gbc_lblDisplayValue = new GridBagConstraints();
+		gbc_lblDisplayValue.anchor = GridBagConstraints.WEST;
+		gbc_lblDisplayValue.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDisplayValue.gridx = 1;
+		gbc_lblDisplayValue.gridy = 2;
+		getContentPane().add(lblDisplayValue, gbc_lblDisplayValue);
+		
+		txtDisplayValue = new JTextField();
+		txtDisplayValue.setColumns(10);
+		GridBagConstraints gbc_txtDisplayValue = new GridBagConstraints();
+		gbc_txtDisplayValue.gridwidth = 3;
+		gbc_txtDisplayValue.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDisplayValue.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDisplayValue.gridx = 3;
+		gbc_txtDisplayValue.gridy = 2;
+		getContentPane().add(txtDisplayValue, gbc_txtDisplayValue);
 
 		JLabel lblDescription = new JLabel("Description");
 		GridBagConstraints gbc_lblDescription = new GridBagConstraints();
 		gbc_lblDescription.anchor = GridBagConstraints.WEST;
 		gbc_lblDescription.insets = new Insets(0, 0, 5, 5);
 		gbc_lblDescription.gridx = 1;
-		gbc_lblDescription.gridy = 2;
+		gbc_lblDescription.gridy = 3;
 		getContentPane().add(lblDescription, gbc_lblDescription);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -74,7 +93,7 @@ public class CodeValueDialog extends MainDialog {
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 3;
-		gbc_scrollPane.gridy = 2;
+		gbc_scrollPane.gridy = 3;
 		getContentPane().add(scrollPane, gbc_scrollPane);
 
 		txtDescription = new JTextArea();
@@ -87,28 +106,28 @@ public class CodeValueDialog extends MainDialog {
 		gbc_lblIsActive.anchor = GridBagConstraints.WEST;
 		gbc_lblIsActive.insets = new Insets(0, 0, 5, 5);
 		gbc_lblIsActive.gridx = 1;
-		gbc_lblIsActive.gridy = 3;
+		gbc_lblIsActive.gridy = 4;
 		getContentPane().add(lblIsActive, gbc_lblIsActive);
 
 		GridBagConstraints gbc_rdBtnIsActive = new GridBagConstraints();
 		gbc_rdBtnIsActive.anchor = GridBagConstraints.WEST;
 		gbc_rdBtnIsActive.insets = new Insets(0, 0, 5, 5);
 		gbc_rdBtnIsActive.gridx = 3;
-		gbc_rdBtnIsActive.gridy = 3;
+		gbc_rdBtnIsActive.gridy = 4;
 		getContentPane().add(rdBtnIsActive, gbc_rdBtnIsActive);
 
 		GridBagConstraints gbc_btnSave = new GridBagConstraints();
 		gbc_btnSave.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSave.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSave.gridx = 4;
-		gbc_btnSave.gridy = 5;
+		gbc_btnSave.gridy = 6;
 		getContentPane().add(btnSave, gbc_btnSave);
 
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCancel.gridx = 5;
-		gbc_btnCancel.gridy = 5;
+		gbc_btnCancel.gridy = 6;
 		getContentPane().add(btnCancel, gbc_btnCancel);
 
 		addEvents();
@@ -165,12 +184,13 @@ public class CodeValueDialog extends MainDialog {
 					codeValueDTO.setCodeDefinitionId(codeDefinitionId);
 				}
 
-				String codeDef = txtCode.getText();
+				String code = txtCode.getText();
+				String displayValue = txtDisplayValue.getText();
 				String description = txtDescription.getText();
 
 				String active = rdBtnIsActive.isSelected() ? "1" : "0";
 
-				if (codeDef.contentEquals("")) {
+				if (code.contentEquals("")) {
 					showWarning("Please fill Code value field!");
 					return;
 				}
@@ -180,7 +200,8 @@ public class CodeValueDialog extends MainDialog {
 					return;
 				}
 
-				codeValueDTO.setCode(codeDef);
+				codeValueDTO.setCode(code);
+				codeValueDTO.setDisplayValue(displayValue);
 				codeValueDTO.setDescription(description);
 				codeValueDTO.setActive(active);
 
