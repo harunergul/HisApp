@@ -15,6 +15,7 @@ import com.erc.his.ClientApp;
 import com.erc.his.client.component.CodeValueCombobox;
 import com.erc.his.client.component.DatePickerComponent;
 import com.erc.his.client.component.MainDialog;
+import com.erc.his.constant.CodeDefinitionConstant;
 import com.erc.his.entity.PatientDTO;
 
 public class AddPatientDialog extends MainDialog {
@@ -24,7 +25,7 @@ public class AddPatientDialog extends MainDialog {
 	private JTextField txtFirstName;
 	private JTextField txtLastName;
 	private JTextField txtIdentificationNo;
-	private CodeValueCombobox cbGender = new CodeValueCombobox("GENDER");
+	private CodeValueCombobox cbGender = new CodeValueCombobox(CodeDefinitionConstant.GENDER);
 	private CodeValueCombobox cbBloodGroup = new CodeValueCombobox("BLOODGROUP");
 	private CodeValueCombobox cbMaritalStatus = new CodeValueCombobox("MARITALSTATUS");
 	private DatePickerComponent birthDateDatePicker = new DatePickerComponent();
