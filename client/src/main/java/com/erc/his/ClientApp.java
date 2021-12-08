@@ -7,8 +7,10 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.json.JSONObject;
 
@@ -25,16 +27,10 @@ public class ClientApp {
 
 	private Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new DateSerializer()).create();
 
-	public static void main(String... args) {
-
-		ClientApp app = new ClientApp();
-//		AppointmentDTO[] result = app.makeRequest("/appointments", AppointmentDTO[].class);
-//		for (AppointmentDTO appointmentDTO : result) {
-//			System.out.println(appointmentDTO.getScalarDoctorName() + " " + appointmentDTO.getScalarDoctorLastName());
-//		}
+	public static CodeValueDTO getCodeValueByCodeValueId(Long codeValueId) throws Exception {
+		return httpGetMethod("/code-value/" + codeValueId, CodeValueDTO.class);
 	}
 
-	// **************************** A D M I S S I O N **************************
 	public AdmissionDTO saveAdmission(AdmissionDTO admissionDTO) throws Exception {
 
 		JSONObject json = new JSONObject();
@@ -72,18 +68,23 @@ public class ClientApp {
 		CodeDefinitionDTO[] codeDefinitions = httpGetMethod("/code-definition/all", CodeDefinitionDTO[].class);
 		return convertToList(codeDefinitions);
 	}
-	
+
 	public ArrayList<CodeValueDTO> getAllCodeValuesByCodeDefinition(Long codeDefinitionId) throws Exception {
-		CodeValueDTO[] values = httpGetMethod("/code-value/all/code-definition/"+codeDefinitionId, CodeValueDTO[].class);
+		CodeValueDTO[] values = httpGetMethod("/code-value/all/code-definition/" + codeDefinitionId,
+				CodeValueDTO[].class);
 		return convertToList(values);
 	}
 
+	public static List<CodeValueDTO> getCodeValueByCodeType(String CODETYPE) throws Exception {
+		CodeValueDTO[] values = httpGetMethod("/code-value/code-definition/" + CODETYPE, CodeValueDTO[].class);
+		return convertToList(values);
+	}
 
 	public void deletePatient(PatientDTO patientDTO) throws Exception {
 		postRequest("/patient/delete", PatientDTO.class, gson.toJson(patientDTO));
 	}
 
-	private <T> ArrayList<T> convertToList(T[] entities) {
+	private static <T> ArrayList<T> convertToList(T[] entities) {
 		ArrayList<T> list = new ArrayList<T>();
 
 		if (entities == null) {
@@ -97,7 +98,7 @@ public class ClientApp {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T httpGetMethod(String pathUrl, Class<T> clazz) throws Exception {
+	public static <T> T httpGetMethod(String pathUrl, Class<T> clazz) throws Exception {
 
 		URL url;
 		try {
@@ -107,7 +108,7 @@ public class ClientApp {
 			InputStream responseStream = connection.getInputStream();
 
 			int responseCode = connection.getResponseCode();
-			if(responseCode==HttpURLConnection.HTTP_OK) {
+			if (responseCode == HttpURLConnection.HTTP_OK) {
 				if (responseStream.available() > 0) {
 					ObjectMapper mapper = new ObjectMapper();
 					Object apod = mapper.readValue(responseStream, clazz);
@@ -116,14 +117,10 @@ public class ClientApp {
 					return null;
 				}
 			}
-			
-			
-			
 
 		} catch (ConnectException ce) {
 			throw new Exception("Can not connect to the server");
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -228,4 +225,9 @@ public class ClientApp {
 		postRequest("/code-value/delete", CodeValueDTO.class, gson.toJson(codeValueDTO));
 	}
 
+	private class CodeValueTryCache {
+		public Long codeValueId;
+		public LocalDate requestDate;
+		public CodeValueDTO codeValueDTO;
+	}
 }

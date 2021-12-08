@@ -6,7 +6,7 @@ public class CodeDefinitionDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long codeDefinitionId;
-	private String codeDefinition;
+	private String codeType;
 	private String description;
 	private String active;
 	private String status;
@@ -17,14 +17,6 @@ public class CodeDefinitionDTO implements Serializable {
 
 	public void setCodeDefinitionId(Long codeDefinitionId) {
 		this.codeDefinitionId = codeDefinitionId;
-	}
-
-	public String getCodeDefinition() {
-		return codeDefinition;
-	}
-
-	public void setCodeDefinition(String codeDefinition) {
-		this.codeDefinition = codeDefinition;
 	}
 
 	public String getDescription() {
@@ -49,6 +41,14 @@ public class CodeDefinitionDTO implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getCodeType() {
+		return codeType;
+	}
+
+	public void setCodeType(String codeType) {
+		this.codeType = codeType;
 	}
 
 }

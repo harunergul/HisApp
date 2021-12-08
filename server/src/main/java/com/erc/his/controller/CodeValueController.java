@@ -17,12 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.erc.his.config.HibernateConfig;
 import com.erc.his.entity.CodeValueDTO;
+import com.erc.his.service.CodeValueService;
 
 @RestController
 @RequestMapping("/code-value")
 public class CodeValueController {
 	@Autowired
 	private HibernateConfig config;
+
+	@Autowired
+	private CodeValueService codeValueService;
 
 	@PostMapping("/save") // -> http://ip:port/code-value/save
 	public ResponseEntity<CodeValueDTO> save(@RequestBody CodeValueDTO codeValueDTO) {
@@ -41,6 +45,12 @@ public class CodeValueController {
 	public ResponseEntity<CodeValueDTO> delete(@RequestBody CodeValueDTO codeValueDTO) {
 		codeValueDTO.setStatus("0");
 		config.update(codeValueDTO);
+		return new ResponseEntity<>(codeValueDTO, HttpStatus.OK);
+	}
+
+	@GetMapping("/{id}") // -> http://ip:port/code-value/delete
+	public ResponseEntity<CodeValueDTO> getData(@PathVariable Long id) {
+		CodeValueDTO codeValueDTO = codeValueService.getCodeValueByCodeValueId(id); 
 		return new ResponseEntity<>(codeValueDTO, HttpStatus.OK);
 	}
 
@@ -67,27 +77,17 @@ public class CodeValueController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 
 	}
-	
+	// code-type
+
 	@GetMapping("/all/code-definition/{codeDefinitionId}")
 	public ResponseEntity<List<CodeValueDTO>> getAllItemsByCodeDefinition(@PathVariable Long codeDefinitionId) {
-		Session session = config.getSession();
+		List<CodeValueDTO> list = codeValueService.getCodeValuesByCodeDefinitionId(codeDefinitionId);
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
 
-		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT {t1.*} ");
-		sql.append(" FROM AHCODEVALUE t1 ");
-		sql.append(" WHERE t1.STATUS = '1' ");
-		sql.append(" AND t1.codeDefinitionId =:codeDefinitionId ");
-
-		@SuppressWarnings("unchecked")
-		NativeQuery<CodeValueDTO> query = session.createSQLQuery(sql.toString());
-		query.addEntity("t1", CodeValueDTO.class);
-		query.setParameter("codeDefinitionId", codeDefinitionId);
-
-		List<CodeValueDTO> results = query.list();
-		List<CodeValueDTO> list = new ArrayList<>();
-		for (CodeValueDTO item : results) {
-			list.add(item);
-		}
+	@GetMapping("/code-definition/{codeDefinition}")
+	public ResponseEntity<List<CodeValueDTO>> getAllItemsByCodeType(@PathVariable String codeDefinition) {
+		List<CodeValueDTO> list = codeValueService.getCodeValuesByCodeDefinition(codeDefinition);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 
 	}

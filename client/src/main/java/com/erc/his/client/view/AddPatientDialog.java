@@ -8,17 +8,14 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.erc.his.ClientApp;
+import com.erc.his.client.component.CodeValueCombobox;
 import com.erc.his.client.component.DatePickerComponent;
 import com.erc.his.client.component.MainDialog;
 import com.erc.his.entity.PatientDTO;
-import com.erc.his.enums.BloodGroup;
-import com.erc.his.enums.Gender;
-import com.erc.his.enums.MaritalStatus;
 
 public class AddPatientDialog extends MainDialog {
 
@@ -27,13 +24,12 @@ public class AddPatientDialog extends MainDialog {
 	private JTextField txtFirstName;
 	private JTextField txtLastName;
 	private JTextField txtIdentificationNo;
-	private JComboBox<String> cbGender = new JComboBox<String>();
-	private JComboBox<String> cbBloodGroup = new JComboBox<String>();
-	private JComboBox<String> cbMaritalStatus = new JComboBox<String>();
+	private CodeValueCombobox cbGender = new CodeValueCombobox("GENDER");
+	private CodeValueCombobox cbBloodGroup = new CodeValueCombobox("BLOODGROUP");
+	private CodeValueCombobox cbMaritalStatus = new CodeValueCombobox("MARITALSTATUS");
 	private DatePickerComponent birthDateDatePicker = new DatePickerComponent();
 	private JButton btnCancel = new JButton("Cancel");
-	private JButton btnSave = new JButton("Save");
-	private final String choose = "--Choose--";
+	private JButton btnSave = new JButton("Save"); 
 	private final String SAVE_EVENT = "SAVE_EVENT";
 	private final String CANCEL_EVENT = "CANCEL_EVENT";
 	private final ClientApp serviceHelper = new ClientApp();
@@ -194,15 +190,6 @@ public class AddPatientDialog extends MainDialog {
 		gbc_btnCancel.gridx = 7;
 		gbc_btnCancel.gridy = 6;
 		add(btnCancel, gbc_btnCancel);
-
-		cbMaritalStatus.addItem(choose);
-		cbBloodGroup.addItem(choose);
-		cbGender.addItem(choose);
-
-		MaritalStatus.getAll().stream().forEach(item -> cbMaritalStatus.addItem(item));
-		BloodGroup.getAll().stream().forEach(item -> cbBloodGroup.addItem(item));
-		Gender.getAll().stream().forEach(item -> cbGender.addItem(item));
-
 		addEvents();
 
 	}
@@ -217,9 +204,9 @@ public class AddPatientDialog extends MainDialog {
 			txtIdentificationNo.setText(patient.getIdentificationNo());
 
 			birthDateDatePicker.setDate(patient.getBirthDate());
-			cbBloodGroup.setSelectedItem(patient.getBloodGroup());
-			cbGender.setSelectedItem(patient.getGender());
-			cbMaritalStatus.setSelectedItem(patient.getMaritalStatus());
+			cbMaritalStatus.setItemById(patient.getMaritalStatusId());
+			cbBloodGroup.setItemById(patient.getBloodGroupId());
+			cbGender.setItemById(patient.getGenderId());
 		}
 
 	}
@@ -260,9 +247,10 @@ public class AddPatientDialog extends MainDialog {
 				String firstName = txtFirstName.getText();
 				String lastName = txtLastName.getText();
 				String identificationNo = txtIdentificationNo.getText();
-				String bloodGroup = (String) cbBloodGroup.getSelectedItem();
-				String maritalStatus = (String) cbMaritalStatus.getSelectedItem();
-				String gender = (String) cbGender.getSelectedItem();
+				
+				Long bloodGroupId = cbBloodGroup.getSelectedId();
+				Long maritalStatusId = cbMaritalStatus.getSelectedId();
+				Long genderId = cbGender.getSelectedId();
 				Date birthDate = birthDateDatePicker.getDate();
 
 				if (firstName.contentEquals("")) {
@@ -303,9 +291,9 @@ public class AddPatientDialog extends MainDialog {
 				patientDTO.setFirstName(firstName);
 				patientDTO.setLastName(lastName);
 				patientDTO.setIdentificationNo(identificationNo);
-				patientDTO.setBloodGroup(bloodGroup);
-				patientDTO.setGender(gender);
-				patientDTO.setMaritalStatus(maritalStatus);
+				patientDTO.setBloodGroupId(bloodGroupId);
+				patientDTO.setGenderId(genderId);
+				patientDTO.setMaritalStatusId(maritalStatusId);
 				patientDTO.setBirthDate(birthDate);
 
 				try {

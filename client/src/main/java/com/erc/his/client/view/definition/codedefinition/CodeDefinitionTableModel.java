@@ -13,7 +13,7 @@ public class CodeDefinitionTableModel extends AbstractTableModel {
 
 	private List<CodeDefinitionDTO> listData = new ArrayList<>();
 
-	String[] columnName = { "Code Definition", "Description", "Is Active" };
+	String[] columnName = { "Code Type", "Description", "Is Active" };
 
 	@Override
 	public int getRowCount() {
@@ -36,7 +36,7 @@ public class CodeDefinitionTableModel extends AbstractTableModel {
 
 		switch (column) {
 		case 0:
-			return codeDefinitionDTO.getCodeDefinition();
+			return codeDefinitionDTO.getCodeType();
 		case 1:
 			return codeDefinitionDTO.getDescription();
 		case 2:

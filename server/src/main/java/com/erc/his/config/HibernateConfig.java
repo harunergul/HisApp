@@ -3,7 +3,6 @@ package com.erc.his.config;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -52,6 +51,10 @@ public class HibernateConfig {
 		session.beginTransaction();
 		session.update(object);
 		session.getTransaction().commit();
+	}
+
+	public <T> T getData(Class<T> clazz, Long key) {
+		return clazz.cast(getSession().load(clazz, key));
 	}
 
 }

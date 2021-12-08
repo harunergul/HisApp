@@ -20,7 +20,7 @@ import com.erc.his.entity.CodeDefinitionDTO;
 public class CodeDefinitionDialog extends MainDialog {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField txtCodeDefinition;
+	private JTextField txtCodeType;
 	private JTextArea txtDescription;
 	private JRadioButton rdBtnIsActive = new JRadioButton("");
 	private JButton btnCancel = new JButton("Cancel");
@@ -49,15 +49,15 @@ public class CodeDefinitionDialog extends MainDialog {
 		gbc_lblCodeDefinition.gridy = 1;
 		getContentPane().add(lblCodeDefinition, gbc_lblCodeDefinition);
 
-		txtCodeDefinition = new JTextField();
+		txtCodeType = new JTextField();
 		GridBagConstraints gbc_txtCodeDefinition = new GridBagConstraints();
 		gbc_txtCodeDefinition.gridwidth = 3;
 		gbc_txtCodeDefinition.insets = new Insets(0, 0, 5, 5);
 		gbc_txtCodeDefinition.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtCodeDefinition.gridx = 3;
 		gbc_txtCodeDefinition.gridy = 1;
-		getContentPane().add(txtCodeDefinition, gbc_txtCodeDefinition);
-		txtCodeDefinition.setColumns(10);
+		getContentPane().add(txtCodeType, gbc_txtCodeDefinition);
+		txtCodeType.setColumns(10);
 
 		JLabel lblDescription = new JLabel("Description");
 		GridBagConstraints gbc_lblDescription = new GridBagConstraints();
@@ -163,12 +163,12 @@ public class CodeDefinitionDialog extends MainDialog {
 					codeDefinitionDTO = new CodeDefinitionDTO();
 				}
 
-				String codeDef = txtCodeDefinition.getText();
+				String codeType = txtCodeType.getText();
 				String description = txtDescription.getText();
 
 				String active = rdBtnIsActive.isSelected() ? "1" : "0";
 
-				if (codeDef.contentEquals("")) {
+				if (codeType.contentEquals("")) {
 					showWarning("Please fill Code Definition field!");
 					return;
 				}
@@ -178,7 +178,7 @@ public class CodeDefinitionDialog extends MainDialog {
 					return;
 				}
 
-				codeDefinitionDTO.setCodeDefinition(codeDef);
+				codeDefinitionDTO.setCodeType(codeType);
 				codeDefinitionDTO.setDescription(description);
 				codeDefinitionDTO.setActive(active);
 
@@ -219,9 +219,10 @@ public class CodeDefinitionDialog extends MainDialog {
 	public void setCodeDefinition(CodeDefinitionDTO entity) {
 		this.codeDefinition = entity;
 		if (codeDefinition != null) {
-			txtCodeDefinition.setEditable(false);
-			txtCodeDefinition.setText(entity.getCodeDefinition());
+			txtCodeType.setEditable(false);
+			txtCodeType.setText(entity.getCodeType());
 			txtDescription.setText(entity.getDescription());
+		
 			boolean isSelected = entity.getActive().equals("1") ? true : false;
 			rdBtnIsActive.setSelected(isSelected);
 		}

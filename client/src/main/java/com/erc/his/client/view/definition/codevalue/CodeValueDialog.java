@@ -242,9 +242,9 @@ public class CodeValueDialog extends MainDialog {
 	public void setCodeDefinition(CodeValueDTO entity) {
 		this.codeValue = entity;
 		if (codeValue != null) {
-			txtCode.setEditable(false);
 			txtCode.setText(entity.getCode());
 			txtDescription.setText(entity.getDescription());
+			txtDisplayValue.setText(entity.getDisplayValue());
 			boolean isSelected = entity.getActive().equals("1") ? true : false;
 			rdBtnIsActive.setSelected(isSelected);
 		}

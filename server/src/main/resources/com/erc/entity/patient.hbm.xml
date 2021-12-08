@@ -15,9 +15,9 @@
 		<property name="firstName" column="FIRSTNAME" type="java.lang.String" />
 		<property name="lastName" column="LASTNAME" type="java.lang.String" />
 		<property name="birthDate" column="BIRTHDATE" type="java.util.Date" />
-		<property name="maritalStatus" column="MARITALSTATUS" type="java.lang.String" />
-		<property name="bloodGroup" column="BLOODGROUP" type="java.lang.String" />
-		<property name="gender" column="GENDER" type="java.lang.String" />
+		<property name="maritalStatusId" column="MARITALSTATUSID" type="java.lang.Long" />
+		<property name="bloodGroupId" column="BLOODGROUPID" type="java.lang.Long" />
+		<property name="genderId" column="GENDERID" type="java.lang.Long" />
 		<property name="status" column="STATUS" type="java.lang.String" />
 	</class>
 </hibernate-mapping>

@@ -10,7 +10,7 @@
 		<id name="codeDefinitionId" column="CODEDEFINITIONID" type="java.lang.Long">
 			<generator class="increment" />
 		</id>
-		<property name="codeDefinition" column="CODEDEFINITION" type="java.lang.String" />
+		<property name="codeType" column="codeType" type="java.lang.String" />
 		<property name="description" column="DESCRIPTION" type="java.lang.String" />
 		<property name="active" column="ACTIVE" type="java.lang.String" />
 		<property name="status" column="STATUS" type="java.lang.String" />

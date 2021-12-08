@@ -18,10 +18,13 @@ public class PatientDTO extends BaseEntity {
 	private String firstName;
 	private String lastName;
 	private Date birthDate;
-	private String gender;
 	private String status;
-	private String bloodGroup;
-	private String maritalStatus;
+	private Long genderId;
+	private String scalarGender;
+	private Long bloodGroupId;
+	private String scalarBloodGroup;
+	private Long maritalStatusId;
+	private Long scalarMaritalStatus;
 
 	public Long getPatientId() {
 		return patientId;
@@ -29,6 +32,14 @@ public class PatientDTO extends BaseEntity {
 
 	public void setPatientId(Long patientId) {
 		this.patientId = patientId;
+	}
+
+	public String getPatientNo() {
+		return patientNo;
+	}
+
+	public void setPatientNo(String patientNo) {
+		this.patientNo = patientNo;
 	}
 
 	public String getIdentificationNo() {
@@ -63,14 +74,6 @@ public class PatientDTO extends BaseEntity {
 		this.birthDate = birthDate;
 	}
 
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
 	public String getStatus() {
 		return status;
 	}
@@ -79,28 +82,52 @@ public class PatientDTO extends BaseEntity {
 		this.status = status;
 	}
 
-	public String getPatientNo() {
-		return patientNo;
+	public Long getGenderId() {
+		return genderId;
 	}
 
-	public void setPatientNo(String patientNo) {
-		this.patientNo = patientNo;
+	public void setGenderId(Long genderId) {
+		this.genderId = genderId;
 	}
 
-	public String getBloodGroup() {
-		return bloodGroup;
+	public String getScalarGender() {
+		return scalarGender;
 	}
 
-	public void setBloodGroup(String bloodGroup) {
-		this.bloodGroup = bloodGroup;
+	public void setScalarGender(String scalarGender) {
+		this.scalarGender = scalarGender;
 	}
 
-	public String getMaritalStatus() {
-		return maritalStatus;
+	public Long getBloodGroupId() {
+		return bloodGroupId;
 	}
 
-	public void setMaritalStatus(String maritalStatus) {
-		this.maritalStatus = maritalStatus;
+	public void setBloodGroupId(Long bloodGroupId) {
+		this.bloodGroupId = bloodGroupId;
+	}
+
+	public String getScalarBloodGroup() {
+		return scalarBloodGroup;
+	}
+
+	public void setScalarBloodGroup(String scalarBloodGroup) {
+		this.scalarBloodGroup = scalarBloodGroup;
+	}
+
+	public Long getMaritalStatusId() {
+		return maritalStatusId;
+	}
+
+	public void setMaritalStatusId(Long maritalStatusId) {
+		this.maritalStatusId = maritalStatusId;
+	}
+
+	public Long getScalarMaritalStatus() {
+		return scalarMaritalStatus;
+	}
+
+	public void setScalarMaritalStatus(Long scalarMaritalStatus) {
+		this.scalarMaritalStatus = scalarMaritalStatus;
 	}
 
 	@JsonIgnore
@@ -112,16 +139,16 @@ public class PatientDTO extends BaseEntity {
 		LocalDate birthDate = zone.toLocalDate();
 		Period period = Period.between(birthDate, LocalDate.now());
 		StringBuffer buffer = new StringBuffer();
-		if(period.getYears()>0) {
+		if (period.getYears() > 0) {
 			buffer.append(period.getYears());
 			buffer.append("y ");
-			
+
 		}
-		if(period.getMonths()>0) {
+		if (period.getMonths() > 0) {
 			buffer.append(period.getMonths());
 			buffer.append("m ");
 		}
-		if(period.getDays()>0 && period.getYears()==0) {
+		if (period.getDays() > 0 && period.getYears() == 0) {
 			buffer.append(period.getDays());
 			buffer.append("d ");
 		}

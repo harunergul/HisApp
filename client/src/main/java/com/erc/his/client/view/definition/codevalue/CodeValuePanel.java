@@ -97,7 +97,7 @@ public class CodeValuePanel extends MainPanel {
 	public void setSelectedCodeDefinitionDTO(CodeDefinitionDTO selectedCodeDefinitionDTO) {
 		if (selectedCodeDefinitionDTO != null) {
 			this.selectedCodeDefinitionDTO = selectedCodeDefinitionDTO;
-			String text = selectedCodeDefinitionDTO.getCodeDefinition();
+			String text = selectedCodeDefinitionDTO.getCodeType();
 			lblSelectedCode.setText(text);
 			getAllCodeValuesByCodeDefinitionId(selectedCodeDefinitionDTO.getCodeDefinitionId());
 			updateBtns(true);
