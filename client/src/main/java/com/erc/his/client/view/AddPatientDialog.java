@@ -26,8 +26,8 @@ public class AddPatientDialog extends MainDialog {
 	private JTextField txtLastName;
 	private JTextField txtIdentificationNo;
 	private CodeValueCombobox cbGender = new CodeValueCombobox(CodeDefinitionConstant.GENDER);
-	private CodeValueCombobox cbBloodGroup = new CodeValueCombobox("BLOODGROUP");
-	private CodeValueCombobox cbMaritalStatus = new CodeValueCombobox("MARITALSTATUS");
+	private CodeValueCombobox cbBloodGroup = new CodeValueCombobox(CodeDefinitionConstant.BLOODGROUP);
+	private CodeValueCombobox cbMaritalStatus = new CodeValueCombobox(CodeDefinitionConstant.MARITALSTATUS);
 	private DatePickerComponent birthDateDatePicker = new DatePickerComponent();
 	private JButton btnCancel = new JButton("Cancel");
 	private JButton btnSave = new JButton("Save"); 
