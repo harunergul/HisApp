@@ -18,6 +18,7 @@ import com.erc.his.entity.CodeDefinitionDTO;
 import com.erc.his.entity.CodeValueDTO;
 import com.erc.his.entity.OrganizationDTO;
 import com.erc.his.entity.PatientDTO;
+import com.erc.his.entity.StaffTitleDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -83,6 +84,11 @@ public class ClientApp {
 	public ArrayList<OrganizationDTO> getAllOrganizations() throws Exception {
 		OrganizationDTO[] organizations = httpGetMethod("/organization/all", OrganizationDTO[].class);
 		return convertToList(organizations);
+	}
+
+	public ArrayList<StaffTitleDTO> getAllStaffTitles() throws Exception {
+		StaffTitleDTO[] dtos = httpGetMethod("/staff-title/all", StaffTitleDTO[].class);
+		return convertToList(dtos);
 	}
 
 	public void deletePatient(PatientDTO patientDTO) throws Exception {
@@ -225,7 +231,7 @@ public class ClientApp {
 	public CodeValueDTO saveCodeValueDTO(CodeValueDTO codeValueDTO) throws Exception {
 		return postRequest("/code-value/save", CodeValueDTO.class, gson.toJson(codeValueDTO));
 	}
-	
+
 	public void deleteCodeValue(CodeValueDTO codeValueDTO) throws Exception {
 		postRequest("/code-value/delete", CodeValueDTO.class, gson.toJson(codeValueDTO));
 	}
@@ -233,11 +239,17 @@ public class ClientApp {
 	public OrganizationDTO saveOrganizationDTO(OrganizationDTO organizationDTO) throws Exception {
 		return postRequest("/organization/save", OrganizationDTO.class, gson.toJson(organizationDTO));
 	}
-	
+
 	public void deleteOrganizationDTO(OrganizationDTO organizationDTO) throws Exception {
 		postRequest("/organization/delete", OrganizationDTO.class, gson.toJson(organizationDTO));
 	}
 
-	
+	public StaffTitleDTO saveStaffTitleDTO(StaffTitleDTO dto) throws Exception {
+		return postRequest("/staff-title/save", StaffTitleDTO.class, gson.toJson(dto));
+	}
+
+	public void deleteStaffTitleDTO(StaffTitleDTO dto) throws Exception {
+		postRequest("/staff-title/delete", StaffTitleDTO.class, gson.toJson(dto));
+	}
 
 }

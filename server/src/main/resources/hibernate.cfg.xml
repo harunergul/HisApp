@@ -24,6 +24,7 @@
 		<mapping resource="com/erc/entity/district.hbm.xml" /> 
 		<mapping resource="com/erc/entity/staff.hbm.xml" />
 		-->
+		<mapping resource="com/erc/entity/staffTitle.hbm.xml" />
 		<mapping resource="com/erc/entity/organization.hbm.xml" />
 		<mapping resource="com/erc/entity/codeDefinition.hbm.xml" />
 		<mapping resource="com/erc/entity/codeValue.hbm.xml" />
