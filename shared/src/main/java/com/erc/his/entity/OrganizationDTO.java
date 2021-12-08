@@ -5,6 +5,16 @@ public class OrganizationDTO extends BaseEntity {
 	private Long organizationId;
 	private String code;
 	private String name;
+	private String active;
+
+	public String getActive() {
+		return active;
+	}
+
+	public void setActive(String active) {
+		this.active = active;
+	}
+
 	private String status;
 
 	public Long getOrganizationId() {

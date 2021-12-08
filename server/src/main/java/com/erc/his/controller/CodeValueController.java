@@ -3,7 +3,6 @@ package com.erc.his.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,7 +55,6 @@ public class CodeValueController {
 
 	@GetMapping("/all/{codeValueId}")
 	public ResponseEntity<List<CodeValueDTO>> getAllItems(@PathVariable Long codeValueId) {
-		Session session = config.getSession();
 
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT {t1.*} ");
@@ -65,7 +63,7 @@ public class CodeValueController {
 		sql.append(" AND t1.codeValueId =:codeValueId ");
 
 		@SuppressWarnings("unchecked")
-		NativeQuery<CodeValueDTO> query = session.createSQLQuery(sql.toString());
+		NativeQuery<CodeValueDTO> query = config.getSession().createSQLQuery(sql.toString());
 		query.addEntity("t1", CodeValueDTO.class);
 		query.setParameter("codeValueId", codeValueId);
 

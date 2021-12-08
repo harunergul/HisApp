@@ -1,4 +1,4 @@
-package com.erc.his.client.view.definition.codevalue;
+package com.erc.his.client.view.organization;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,20 +9,16 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.erc.his.ClientApp;
 import com.erc.his.client.component.MainDialog;
-import com.erc.his.entity.CodeDefinitionDTO;
-import com.erc.his.entity.CodeValueDTO;
+import com.erc.his.entity.OrganizationDTO;
 
-public class CodeValueDialog extends MainDialog {
+public class OrganizationAddDialog extends MainDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField txtCode;
-	private JTextArea txtDescription;
 	private JRadioButton rdBtnIsActive = new JRadioButton("");
 	private JButton btnCancel = new JButton("Cancel");
 	private JButton btnSave = new JButton("Save");
@@ -31,26 +27,25 @@ public class CodeValueDialog extends MainDialog {
 	private final String IS_ACTIVE_EVENT = "IS_ACTIVE_EVENT";
 	private final ClientApp serviceHelper = new ClientApp();
 
-	public CodeValueDialogResult dialogResult;
-	private CodeValueDTO codeValue;
-	private CodeDefinitionDTO codeDefinitionDTO;
-	private JTextField txtDisplayValue;
+	public OrganizationAddDialogResult dialogResult;
+	private OrganizationDTO organization;
+	private JTextField txtName;
 
-	public CodeValueDialog() {
+	public OrganizationAddDialog() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 5, 150, 5, 97, 100, 100, 5, 0 };
-		gridBagLayout.rowHeights = new int[] { 5, 0, 0, 0, 0, 5, 0, 5, 0 };
+		gridBagLayout.rowHeights = new int[] { 5, 0, 0, 0, 5, 0, 5, 0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		getContentPane().setLayout(gridBagLayout);
 
-		JLabel lblCodeValue = new JLabel("Code Value");
-		GridBagConstraints gbc_lblCodeValue = new GridBagConstraints();
-		gbc_lblCodeValue.anchor = GridBagConstraints.WEST;
-		gbc_lblCodeValue.insets = new Insets(0, 0, 5, 5);
-		gbc_lblCodeValue.gridx = 1;
-		gbc_lblCodeValue.gridy = 1;
-		getContentPane().add(lblCodeValue, gbc_lblCodeValue);
+		JLabel lblCode = new JLabel("Code");
+		GridBagConstraints gbc_lblCode = new GridBagConstraints();
+		gbc_lblCode.anchor = GridBagConstraints.WEST;
+		gbc_lblCode.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCode.gridx = 1;
+		gbc_lblCode.gridy = 1;
+		getContentPane().add(lblCode, gbc_lblCode);
 
 		txtCode = new JTextField();
 		GridBagConstraints gbc_txtCode = new GridBagConstraints();
@@ -62,79 +57,57 @@ public class CodeValueDialog extends MainDialog {
 		getContentPane().add(txtCode, gbc_txtCode);
 		txtCode.setColumns(10);
 
-		JLabel lblDisplayValue = new JLabel("Display Value");
-		GridBagConstraints gbc_lblDisplayValue = new GridBagConstraints();
-		gbc_lblDisplayValue.anchor = GridBagConstraints.WEST;
-		gbc_lblDisplayValue.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDisplayValue.gridx = 1;
-		gbc_lblDisplayValue.gridy = 2;
-		getContentPane().add(lblDisplayValue, gbc_lblDisplayValue);
+		JLabel lblName = new JLabel("Name");
+		GridBagConstraints gbc_lblName = new GridBagConstraints();
+		gbc_lblName.anchor = GridBagConstraints.WEST;
+		gbc_lblName.insets = new Insets(0, 0, 5, 5);
+		gbc_lblName.gridx = 1;
+		gbc_lblName.gridy = 2;
+		getContentPane().add(lblName, gbc_lblName);
 
-		txtDisplayValue = new JTextField();
-		txtDisplayValue.setColumns(10);
-		GridBagConstraints gbc_txtDisplayValue = new GridBagConstraints();
-		gbc_txtDisplayValue.gridwidth = 3;
-		gbc_txtDisplayValue.insets = new Insets(0, 0, 5, 5);
-		gbc_txtDisplayValue.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtDisplayValue.gridx = 3;
-		gbc_txtDisplayValue.gridy = 2;
-		getContentPane().add(txtDisplayValue, gbc_txtDisplayValue);
-
-		JLabel lblDescription = new JLabel("Description");
-		GridBagConstraints gbc_lblDescription = new GridBagConstraints();
-		gbc_lblDescription.anchor = GridBagConstraints.WEST;
-		gbc_lblDescription.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDescription.gridx = 1;
-		gbc_lblDescription.gridy = 3;
-		getContentPane().add(lblDescription, gbc_lblDescription);
-
-		JScrollPane scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridwidth = 3;
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 3;
-		gbc_scrollPane.gridy = 3;
-		getContentPane().add(scrollPane, gbc_scrollPane);
-
-		txtDescription = new JTextArea();
-		scrollPane.setViewportView(txtDescription);
-		txtDescription.setRows(40);
-		txtDescription.setColumns(10);
+		txtName = new JTextField();
+		txtName.setColumns(10);
+		GridBagConstraints gbc_txtName = new GridBagConstraints();
+		gbc_txtName.gridwidth = 3;
+		gbc_txtName.insets = new Insets(0, 0, 5, 5);
+		gbc_txtName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtName.gridx = 3;
+		gbc_txtName.gridy = 2;
+		getContentPane().add(txtName, gbc_txtName);
 
 		JLabel lblIsActive = new JLabel("Is Active?");
 		GridBagConstraints gbc_lblIsActive = new GridBagConstraints();
 		gbc_lblIsActive.anchor = GridBagConstraints.WEST;
 		gbc_lblIsActive.insets = new Insets(0, 0, 5, 5);
 		gbc_lblIsActive.gridx = 1;
-		gbc_lblIsActive.gridy = 4;
+		gbc_lblIsActive.gridy = 3;
 		getContentPane().add(lblIsActive, gbc_lblIsActive);
 
 		GridBagConstraints gbc_rdBtnIsActive = new GridBagConstraints();
 		gbc_rdBtnIsActive.anchor = GridBagConstraints.WEST;
 		gbc_rdBtnIsActive.insets = new Insets(0, 0, 5, 5);
 		gbc_rdBtnIsActive.gridx = 3;
-		gbc_rdBtnIsActive.gridy = 4;
+		gbc_rdBtnIsActive.gridy = 3;
 		getContentPane().add(rdBtnIsActive, gbc_rdBtnIsActive);
 
 		GridBagConstraints gbc_btnSave = new GridBagConstraints();
 		gbc_btnSave.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSave.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSave.gridx = 4;
-		gbc_btnSave.gridy = 6;
+		gbc_btnSave.gridy = 5;
 		getContentPane().add(btnSave, gbc_btnSave);
 
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCancel.gridx = 5;
-		gbc_btnCancel.gridy = 6;
+		gbc_btnCancel.gridy = 5;
 		getContentPane().add(btnCancel, gbc_btnCancel);
 
 		addEvents();
 
-		if (codeValue != null) {
-			boolean isSelected = (codeValue.getActive() != null && codeValue.getActive().equals("1"));
+		if (organization != null) {
+			boolean isSelected = (organization.getActive() != null && organization.getActive().equals("1"));
 
 			if (isSelected) {
 				rdBtnIsActive.setText("Active");
@@ -161,11 +134,11 @@ public class CodeValueDialog extends MainDialog {
 
 	}
 
-	class CodeValueDialogResult {
-		public CodeValueDTO codeValueDTO;
+	class OrganizationAddDialogResult {
+		public OrganizationDTO entity;
 
-		public CodeValueDialogResult(CodeValueDTO entity) {
-			this.codeValueDTO = entity;
+		public OrganizationAddDialogResult(OrganizationDTO entity) {
+			this.entity = entity;
 		}
 	}
 
@@ -176,41 +149,38 @@ public class CodeValueDialog extends MainDialog {
 			String cmd = e.getActionCommand();
 
 			if (cmd.equals(SAVE_EVENT)) {
-				CodeValueDTO codeValueDTO;
+				OrganizationDTO organizationDTO;
 
-				if (codeValue != null) {
-					codeValueDTO = codeValue;
+				if (organization != null) {
+					organizationDTO = organization;
 				} else {
-					codeValueDTO = new CodeValueDTO();
-					codeValueDTO.setCodeDefinitionId(codeDefinitionDTO.getCodeDefinitionId());
+					organizationDTO = new OrganizationDTO();
+
 				}
 
 				String code = txtCode.getText();
-				String displayValue = txtDisplayValue.getText();
-				String description = txtDescription.getText();
-
+				String name = txtName.getText();
 				String active = rdBtnIsActive.isSelected() ? "1" : "0";
 
 				if (code.contentEquals("")) {
-					showWarning("Please fill Code value field!");
+					showWarning("Please fill organization code field!");
 					return;
 				}
 
-				if (description.contentEquals("")) {
-					showWarning("Please fill description!");
+				if (name.contentEquals("")) {
+					showWarning("Please fill organization name!");
 					return;
 				}
 
-				codeValueDTO.setCode(code);
-				codeValueDTO.setDisplayValue(displayValue);
-				codeValueDTO.setDescription(description);
-				codeValueDTO.setActive(active);
+				organizationDTO.setCode(code);
+				organizationDTO.setName(name);
+				organizationDTO.setActive(active);
 
 				try {
-					boolean isNew = codeValueDTO.getCodeValueId() == null;
+					boolean isNew = organizationDTO.getOrganizationId() == null;
 
-					codeValueDTO = serviceHelper.saveCodeValueDTO(codeValueDTO);
-					dialogResult = new CodeValueDialogResult(codeValueDTO);
+					organizationDTO = serviceHelper.saveOrganizationDTO(organizationDTO);
+					dialogResult = new OrganizationAddDialogResult(organizationDTO);
 					if (isNew) {
 						showSuccess("Successfully created.");
 					} else {
@@ -239,23 +209,19 @@ public class CodeValueDialog extends MainDialog {
 
 	}
 
-	public void setCodeDefinition(CodeValueDTO entity) {
-		this.codeValue = entity;
-		if (codeValue != null) {
+	public void setOrganization(OrganizationDTO entity) {
+		this.organization = entity;
+		if (organization != null) {
 			txtCode.setText(entity.getCode());
-			txtDescription.setText(entity.getDescription());
-			txtDisplayValue.setText(entity.getDisplayValue());
+			txtName.setText(entity.getName());
 			boolean isSelected = entity.getActive().equals("1") ? true : false;
+			rdBtnIsActive.setSelected(isSelected);
 			if (isSelected) {
 				rdBtnIsActive.setText("Active");
 			} else {
 				rdBtnIsActive.setText("Passive");
 			}
 		}
-	}
-
-	public void setCodeDefinitionDTO(CodeDefinitionDTO selectedCodeDefinitionDTO) {
-		this.codeDefinitionDTO = selectedCodeDefinitionDTO;
 	}
 
 }

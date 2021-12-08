@@ -7,7 +7,6 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +16,7 @@ import org.json.JSONObject;
 import com.erc.his.entity.AdmissionDTO;
 import com.erc.his.entity.CodeDefinitionDTO;
 import com.erc.his.entity.CodeValueDTO;
+import com.erc.his.entity.OrganizationDTO;
 import com.erc.his.entity.PatientDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -78,6 +78,11 @@ public class ClientApp {
 	public static List<CodeValueDTO> getCodeValueByCodeType(String CODETYPE) throws Exception {
 		CodeValueDTO[] values = httpGetMethod("/code-value/code-definition/" + CODETYPE, CodeValueDTO[].class);
 		return convertToList(values);
+	}
+
+	public ArrayList<OrganizationDTO> getAllOrganizations() throws Exception {
+		OrganizationDTO[] organizations = httpGetMethod("/organization/all", OrganizationDTO[].class);
+		return convertToList(organizations);
 	}
 
 	public void deletePatient(PatientDTO patientDTO) throws Exception {
@@ -220,14 +225,19 @@ public class ClientApp {
 	public CodeValueDTO saveCodeValueDTO(CodeValueDTO codeValueDTO) throws Exception {
 		return postRequest("/code-value/save", CodeValueDTO.class, gson.toJson(codeValueDTO));
 	}
-
+	
 	public void deleteCodeValue(CodeValueDTO codeValueDTO) throws Exception {
 		postRequest("/code-value/delete", CodeValueDTO.class, gson.toJson(codeValueDTO));
 	}
 
-	private class CodeValueTryCache {
-		public Long codeValueId;
-		public LocalDate requestDate;
-		public CodeValueDTO codeValueDTO;
+	public OrganizationDTO saveOrganizationDTO(OrganizationDTO organizationDTO) throws Exception {
+		return postRequest("/organization/save", OrganizationDTO.class, gson.toJson(organizationDTO));
 	}
+	
+	public void deleteOrganizationDTO(OrganizationDTO organizationDTO) throws Exception {
+		postRequest("/organization/delete", OrganizationDTO.class, gson.toJson(organizationDTO));
+	}
+
+	
+
 }
