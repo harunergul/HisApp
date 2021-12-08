@@ -77,63 +77,8 @@ CREATE TABLE AHCODEDEFINITION
 	CODE VARCHAR2(20),
 	DISPLAYVALUE VARCHAR2(64),
 	DESCRIPTION VARCHAR2(64),
+	ACTIVE VARCHAR2(1),
 	STATUS VARCHAR2(1),
 	CONSTRAINT AHCODEVALUE_PK PRIMARY KEY (CODEVALUEID)
 );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE hibernate-mapping PUBLIC 
-"-//Hibernate/Hibernate Mapping DTD//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-
-<hibernate-mapping>
-	<class name="com.erc.his.entity.CodeDefinition" table="AHCODEDEFINITION">
-
-		<id name="codeDefinitionId" column="CODEDEFINITIONID" type="java.lang.Long">
-			<generator class="increment" />
-		</id>
-		<property name="codeDefinition" column="CODEDEFINITION" type="java.lang.String" />
-		<property name="description" column="DESCRIPTION" type="java.lang.String" />
-		<property name="status" column="STATUS" type="java.lang.String" />
-	</class>
-</hibernate-mapping>
-
-
-
-
-
-CREATE TABLE AHCODEVALUE
-(
-	CODEVALUEID  NUMBER(19,0) NOT NULL,
-	CODE VARCHAR2(64),
-	DESCRIPTION VARCHAR2(64),
-	STATUS VARCHAR2(1),
-	CONSTRAINT AHCODEVALUE_PK PRIMARY KEY (CODEVALUEID) 
-);

@@ -16,6 +16,7 @@ import javax.swing.JTable;
 
 import com.erc.his.ClientApp;
 import com.erc.his.client.component.MainPanel;
+import com.erc.his.client.constant.CustomEvent;
 import com.erc.his.entity.CodeDefinitionDTO;
 
 public class CodeDefinitionPanel extends MainPanel {
@@ -31,6 +32,7 @@ public class CodeDefinitionPanel extends MainPanel {
 	private final String UPDATE_EVENT = "UPDATE_EVENT";
 	private final String DELETE_EVENT = "DELETE_EVENT";
 	private final ClientApp serviceHelper = new ClientApp();
+	private CodeDefinitionDTO selectedCodeDefinitionDTO;
 
 	public CodeDefinitionPanel() {
 
@@ -74,6 +76,14 @@ public class CodeDefinitionPanel extends MainPanel {
 
 	}
 
+	public CodeDefinitionDTO getSelectedCodeDefinitionDTO() {
+		return selectedCodeDefinitionDTO;
+	}
+
+	public void setSelectedCodeDefinitionDTO(CodeDefinitionDTO selectedCodeDefinitionDTO) {
+		this.selectedCodeDefinitionDTO = selectedCodeDefinitionDTO;
+	}
+
 	private void getAllPatients() {
 		ArrayList<CodeDefinitionDTO> list;
 		try {
@@ -83,7 +93,7 @@ public class CodeDefinitionPanel extends MainPanel {
 		} catch (Exception e) {
 			showError(e.getLocalizedMessage());
 		}
-		
+
 	}
 
 	private void addEvents() {
@@ -95,15 +105,17 @@ public class CodeDefinitionPanel extends MainPanel {
 		btnAdd.setActionCommand(ADD_EVENT);
 		btnUpdate.setActionCommand(UPDATE_EVENT);
 		btnDelete.setActionCommand(DELETE_EVENT);
-		
+
 		codeDefinitionTable.addMouseListener(new MouseAdapter() {
-			
-			public void mousePressed(MouseEvent mouseEvent) { 
+
+			public void mousePressed(MouseEvent mouseEvent) {
 				Point point = mouseEvent.getPoint();
 				int row = codeDefinitionTable.rowAtPoint(point);
-				
-				if(codeDefinitionTable.getSelectedRow()!=-1) {
-					System.out.println(row);
+
+				if (codeDefinitionTable.getSelectedRow() != -1) {
+					selectedCodeDefinitionDTO = codeDefinitionTableModel.getListData().get(row);
+					setActionCommand(CustomEvent.CODE_DEFINITION_SELECTED); //$NON-NLS-1$
+					fireActionPerformed();
 				}
 			}
 		});
@@ -174,6 +186,5 @@ public class CodeDefinitionPanel extends MainPanel {
 		}
 
 	}
-	
 
 }

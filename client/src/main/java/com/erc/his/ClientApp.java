@@ -73,8 +73,8 @@ public class ClientApp {
 		return convertToList(codeDefinitions);
 	}
 	
-	public ArrayList<CodeValueDTO> getAllCodeValueByCodeDefinition(Long codeDefinitionId) throws Exception {
-		CodeValueDTO[] values = httpGetMethod("/code-definition/all/"+codeDefinitionId, CodeValueDTO[].class);
+	public ArrayList<CodeValueDTO> getAllCodeValuesByCodeDefinition(Long codeDefinitionId) throws Exception {
+		CodeValueDTO[] values = httpGetMethod("/code-value/all/code-definition/"+codeDefinitionId, CodeValueDTO[].class);
 		return convertToList(values);
 	}
 

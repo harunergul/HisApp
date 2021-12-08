@@ -27,8 +27,8 @@ public class CodeValueController {
 	@PostMapping("/save") // -> http://ip:port/code-value/save
 	public ResponseEntity<CodeValueDTO> save(@RequestBody CodeValueDTO codeValueDTO) {
 
-		if (codeValueDTO.getCodeDefinitionId() == null) {
-			codeValueDTO.setCodeDefinitionId(config.generateID());
+		if (codeValueDTO.getCodeValueId() == null) {
+			codeValueDTO.setCodeValueId(config.generateID());
 			codeValueDTO.setStatus("1");
 			config.save(codeValueDTO);
 		} else {
@@ -58,6 +58,30 @@ public class CodeValueController {
 		NativeQuery<CodeValueDTO> query = session.createSQLQuery(sql.toString());
 		query.addEntity("t1", CodeValueDTO.class);
 		query.setParameter("codeValueId", codeValueId);
+
+		List<CodeValueDTO> results = query.list();
+		List<CodeValueDTO> list = new ArrayList<>();
+		for (CodeValueDTO item : results) {
+			list.add(item);
+		}
+		return new ResponseEntity<>(list, HttpStatus.OK);
+
+	}
+	
+	@GetMapping("/all/code-definition/{codeDefinitionId}")
+	public ResponseEntity<List<CodeValueDTO>> getAllItemsByCodeDefinition(@PathVariable Long codeDefinitionId) {
+		Session session = config.getSession();
+
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT {t1.*} ");
+		sql.append(" FROM AHCODEVALUE t1 ");
+		sql.append(" WHERE t1.STATUS = '1' ");
+		sql.append(" AND t1.codeDefinitionId =:codeDefinitionId ");
+
+		@SuppressWarnings("unchecked")
+		NativeQuery<CodeValueDTO> query = session.createSQLQuery(sql.toString());
+		query.addEntity("t1", CodeValueDTO.class);
+		query.setParameter("codeDefinitionId", codeDefinitionId);
 
 		List<CodeValueDTO> results = query.list();
 		List<CodeValueDTO> list = new ArrayList<>();

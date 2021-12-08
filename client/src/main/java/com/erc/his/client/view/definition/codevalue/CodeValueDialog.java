@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 
 import com.erc.his.ClientApp;
 import com.erc.his.client.component.MainDialog;
+import com.erc.his.entity.CodeDefinitionDTO;
 import com.erc.his.entity.CodeValueDTO;
 
 public class CodeValueDialog extends MainDialog {
@@ -32,7 +33,7 @@ public class CodeValueDialog extends MainDialog {
 
 	public CodeValueDialogResult dialogResult;
 	private CodeValueDTO codeValue;
-	private Long codeDefinitionId;
+	private CodeDefinitionDTO codeDefinitionDTO;
 	private JTextField txtDisplayValue;
 
 	public CodeValueDialog() {
@@ -60,7 +61,7 @@ public class CodeValueDialog extends MainDialog {
 		gbc_txtCode.gridy = 1;
 		getContentPane().add(txtCode, gbc_txtCode);
 		txtCode.setColumns(10);
-		
+
 		JLabel lblDisplayValue = new JLabel("Display Value");
 		GridBagConstraints gbc_lblDisplayValue = new GridBagConstraints();
 		gbc_lblDisplayValue.anchor = GridBagConstraints.WEST;
@@ -68,7 +69,7 @@ public class CodeValueDialog extends MainDialog {
 		gbc_lblDisplayValue.gridx = 1;
 		gbc_lblDisplayValue.gridy = 2;
 		getContentPane().add(lblDisplayValue, gbc_lblDisplayValue);
-		
+
 		txtDisplayValue = new JTextField();
 		txtDisplayValue.setColumns(10);
 		GridBagConstraints gbc_txtDisplayValue = new GridBagConstraints();
@@ -181,7 +182,7 @@ public class CodeValueDialog extends MainDialog {
 					codeValueDTO = codeValue;
 				} else {
 					codeValueDTO = new CodeValueDTO();
-					codeValueDTO.setCodeDefinitionId(codeDefinitionId);
+					codeValueDTO.setCodeDefinitionId(codeDefinitionDTO.getCodeDefinitionId());
 				}
 
 				String code = txtCode.getText();
@@ -232,7 +233,6 @@ public class CodeValueDialog extends MainDialog {
 				} else {
 					rdBtnIsActive.setText("Passive");
 				}
-
 			}
 
 		}
@@ -250,8 +250,8 @@ public class CodeValueDialog extends MainDialog {
 		}
 	}
 
-	public void setCodeDefinitionId(Long codeDefinitionId) {
-		this.codeDefinitionId = codeDefinitionId;
+	public void setCodeDefinitionDTO(CodeDefinitionDTO selectedCodeDefinitionDTO) {
+		this.codeDefinitionDTO = selectedCodeDefinitionDTO;
 	}
 
 }

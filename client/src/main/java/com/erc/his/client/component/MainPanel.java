@@ -1,5 +1,7 @@
 package com.erc.his.client.component;
 
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Action;
@@ -38,10 +40,39 @@ public class MainPanel extends JPanel {
 		listenerList.remove(ActionListener.class, listener);
 	}
 	
+	 
 	public void fireActionPerformed() {
-		Object[] list = listenerList.getListenerList();
-		
-		
+		// Guaranteed to return a non-null array
+		Object[] listeners = listenerList.getListenerList();
+		int modifiers = 0;
+		ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+				actionCommand, EventQueue.getMostRecentEventTime(), modifiers);
+
+		// Process the listeners last to first, notifying
+		// those that are interested in this event
+		for (int i = listeners.length - 2; i >= 0; i -= 2) {
+			if (listeners[i] == ActionListener.class)
+				((ActionListener) listeners[i + 1]).actionPerformed(e);
+		}
+	}
+	public String getActionCommand() {
+		return actionCommand;
+	}
+
+	public void setActionCommand(String actionCommand) {
+		this.actionCommand = actionCommand;
+	}
+
+	public Action getAction() {
+		return action;
+	}
+
+	public void setAction(Action action) {
+		this.action = action;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 	

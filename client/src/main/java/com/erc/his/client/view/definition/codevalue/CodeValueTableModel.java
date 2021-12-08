@@ -17,7 +17,12 @@ public class CodeValueTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return listData.size();
+		if(listData!=null) {
+			return listData.size();
+		}else {
+			return 0;
+		}
+		
 	}
 
 	@Override

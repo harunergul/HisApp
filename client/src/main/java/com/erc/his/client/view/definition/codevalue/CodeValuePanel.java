@@ -15,6 +15,8 @@ import com.erc.his.ClientApp;
 import com.erc.his.client.component.MainPanel;
 import com.erc.his.entity.CodeDefinitionDTO;
 import com.erc.his.entity.CodeValueDTO;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 public class CodeValuePanel extends MainPanel {
 	private static final long serialVersionUID = -1536233362545908337L;
@@ -30,15 +32,24 @@ public class CodeValuePanel extends MainPanel {
 	private final String DELETE_EVENT = "DELETE_EVENT";
 	private final ClientApp serviceHelper = new ClientApp();
 	private CodeDefinitionDTO selectedCodeDefinitionDTO;
+	private final JLabel lblSelectedCode = new JLabel("");
 
 	public CodeValuePanel() {
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] { 5, 0, 0, 0, 0, 5, 0 };
+		gridBagLayout.columnWidths = new int[] { 5, 100, 0, 0, 0, 5, 0 };
 		gridBagLayout.rowHeights = new int[] { 5, 0, 0, 5, 0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
+		
+		GridBagConstraints gbc_lblSelectedCode = new GridBagConstraints();
+		gbc_lblSelectedCode.anchor = GridBagConstraints.WEST;
+		gbc_lblSelectedCode.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSelectedCode.gridx = 1;
+		gbc_lblSelectedCode.gridy = 1;
+		lblSelectedCode.setFont(new Font("Tahoma", Font.BOLD, 14));
+		add(lblSelectedCode, gbc_lblSelectedCode);
 
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
 		gbc_btnAdd.insets = new Insets(0, 0, 5, 5);
@@ -68,7 +79,7 @@ public class CodeValuePanel extends MainPanel {
 		codeValueTable.setModel(codeValueTableModel);
 		scrollPane.setViewportView(codeValueTable);
 
-		addEvents(); 
+		addEvents();
 		updateBtns(false);
 
 	}
@@ -84,14 +95,25 @@ public class CodeValuePanel extends MainPanel {
 	}
 
 	public void setSelectedCodeDefinitionDTO(CodeDefinitionDTO selectedCodeDefinitionDTO) {
-		this.selectedCodeDefinitionDTO = selectedCodeDefinitionDTO;
-		updateBtns(true);
+		if (selectedCodeDefinitionDTO != null) {
+			this.selectedCodeDefinitionDTO = selectedCodeDefinitionDTO;
+			String text = selectedCodeDefinitionDTO.getCodeDefinition();
+			lblSelectedCode.setText(text);
+			getAllCodeValuesByCodeDefinitionId(selectedCodeDefinitionDTO.getCodeDefinitionId());
+			updateBtns(true);
+		}else {
+			updateBtns(false);
+			lblSelectedCode.setText("");
+			codeValueTableModel.setListData(null);
+			codeValueTableModel.fireTableDataChanged();
+		}
+
 	}
 
 	public void getAllCodeValuesByCodeDefinitionId(Long codeDefinitionId) {
 		ArrayList<CodeValueDTO> list;
 		try {
-			list = serviceHelper.getAllCodeValueByCodeDefinition(codeDefinitionId);
+			list = serviceHelper.getAllCodeValuesByCodeDefinition(codeDefinitionId);
 			codeValueTableModel.setListData(list);
 			codeValueTableModel.fireTableDataChanged();
 		} catch (Exception e) {
@@ -120,6 +142,7 @@ public class CodeValuePanel extends MainPanel {
 
 			if (cmd.equals(ADD_EVENT)) {
 				CodeValueDialog dialog = new CodeValueDialog();
+				dialog.setCodeDefinitionDTO(selectedCodeDefinitionDTO);
 				dialog.setModal(true);
 				dialog.setSize(560, 250);
 				dialog.setLocationRelativeTo(null);
@@ -176,6 +199,5 @@ public class CodeValuePanel extends MainPanel {
 		}
 
 	}
-	
 
 }
