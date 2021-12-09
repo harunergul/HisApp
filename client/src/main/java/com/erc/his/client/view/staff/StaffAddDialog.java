@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,6 +17,7 @@ import com.erc.his.client.component.MainDialog;
 import com.erc.his.client.component.OrganizationSelectionComponent;
 import com.erc.his.constant.CodeDefinitionConstant;
 import com.erc.his.entity.OrganizationDTO;
+import com.erc.his.entity.StaffDTO;
 import com.erc.his.client.component.DatePickerComponent;
 import com.erc.his.client.component.CodeValueCombobox;
 import com.erc.his.client.component.StaffTypeComponent;
@@ -35,8 +37,8 @@ public class StaffAddDialog extends MainDialog {
 	private final String IS_ACTIVE_EVENT = "IS_ACTIVE_EVENT";
 	private final ClientApp serviceHelper = new ClientApp();
 
-	public OrganizationAddDialogResult dialogResult;
-	private OrganizationDTO organization;
+	public StaffAddDialogResult dialogResult;
+	private StaffDTO staffDTO;
 	private JTextField txtFirstName = new JTextField();
 	private JTextField txtLastName = new JTextField();
 	private JTextField txtIdentificationNo = new JTextField();
@@ -47,15 +49,15 @@ public class StaffAddDialog extends MainDialog {
 	private final CodeValueCombobox cbMilitaryStatus = new CodeValueCombobox(CodeDefinitionConstant.MILITARYSTATUS);
 	private OrganizationSelectionComponent organizationComponent = new OrganizationSelectionComponent();
 	private final StaffTypeComponent staffTypeComponent = new StaffTypeComponent();
-	private final DatePickerComponent birthDatePicker_1 = new DatePickerComponent();
+	private final DatePickerComponent startDatePicker = new DatePickerComponent();
 	private final JTextField txtPhoneNumber = new JTextField();
 	private final JTextField txtWorkPhoneNumber = new JTextField();
 
 	public StaffAddDialog() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] { 5, 90, 5, 150, 5, 90, 150, 40, 40, 0, 5, 0 };
-		gridBagLayout.rowHeights = new int[] { 5, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0 };
-		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
+		gridBagLayout.columnWidths = new int[] { 5, 80, 5, 150, 5, 80, 70, 40, 40, 5, 0 };
+		gridBagLayout.rowHeights = new int[] { 5, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0, 5, 0 };
+		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
 				Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 				Double.MIN_VALUE };
@@ -230,6 +232,7 @@ public class StaffAddDialog extends MainDialog {
 		getContentPane().add(lblOrganization, gbc_lblOrganization);
 
 		GridBagConstraints gbc_organizationComponent = new GridBagConstraints();
+		gbc_organizationComponent.fill = GridBagConstraints.HORIZONTAL;
 		gbc_organizationComponent.insets = new Insets(0, 0, 5, 5);
 		gbc_organizationComponent.gridx = 3;
 		gbc_organizationComponent.gridy = 6;
@@ -272,13 +275,13 @@ public class StaffAddDialog extends MainDialog {
 		gbc_lblStartDate.gridy = 7;
 		getContentPane().add(lblStartDate, gbc_lblStartDate);
 
-		GridBagConstraints gbc_birthDatePicker_1 = new GridBagConstraints();
-		gbc_birthDatePicker_1.gridwidth = 3;
-		gbc_birthDatePicker_1.insets = new Insets(0, 0, 5, 5);
-		gbc_birthDatePicker_1.fill = GridBagConstraints.BOTH;
-		gbc_birthDatePicker_1.gridx = 6;
-		gbc_birthDatePicker_1.gridy = 7;
-		getContentPane().add(birthDatePicker_1, gbc_birthDatePicker_1);
+		GridBagConstraints gbc_startDatePicker = new GridBagConstraints();
+		gbc_startDatePicker.gridwidth = 3;
+		gbc_startDatePicker.insets = new Insets(0, 0, 5, 5);
+		gbc_startDatePicker.fill = GridBagConstraints.BOTH;
+		gbc_startDatePicker.gridx = 6;
+		gbc_startDatePicker.gridy = 7;
+		getContentPane().add(startDatePicker, gbc_startDatePicker);
 
 		GridBagConstraints gbc_lblWorkPhoneNumber = new GridBagConstraints();
 		gbc_lblWorkPhoneNumber.anchor = GridBagConstraints.WEST;
@@ -314,20 +317,20 @@ public class StaffAddDialog extends MainDialog {
 		gbc_btnSave.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSave.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSave.gridx = 7;
-		gbc_btnSave.gridy = 9;
+		gbc_btnSave.gridy = 10;
 		getContentPane().add(btnSave, gbc_btnSave);
 
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCancel.gridx = 8;
-		gbc_btnCancel.gridy = 9;
+		gbc_btnCancel.gridy = 10;
 		getContentPane().add(btnCancel, gbc_btnCancel);
 
 		addEvents();
 
-		if (organization != null) {
-			boolean isSelected = (organization.getActive() != null && organization.getActive().equals("1"));
+		if (staffDTO != null) {
+			boolean isSelected = (staffDTO.getActive() != null && staffDTO.getActive().equals("1"));
 
 			if (isSelected) {
 				rdBtnIsActive.setText("Active");
@@ -354,10 +357,10 @@ public class StaffAddDialog extends MainDialog {
 
 	}
 
-	class OrganizationAddDialogResult {
-		public OrganizationDTO entity;
+	class StaffAddDialogResult {
+		public StaffDTO entity;
 
-		public OrganizationAddDialogResult(OrganizationDTO entity) {
+		public StaffAddDialogResult(StaffDTO entity) {
 			this.entity = entity;
 		}
 	}
@@ -369,38 +372,75 @@ public class StaffAddDialog extends MainDialog {
 			String cmd = e.getActionCommand();
 
 			if (cmd.equals(SAVE_EVENT)) {
-				OrganizationDTO organizationDTO;
+				StaffDTO dto;
 
-				if (organization != null) {
-					organizationDTO = organization;
+				if (staffDTO != null) {
+					dto = staffDTO;
 				} else {
-					organizationDTO = new OrganizationDTO();
+					dto = new StaffDTO();
 
 				}
 
-				String code = txtEmployeeNo.getText();
-				String name = txtFirstName.getText();
+				String employeeNo = txtEmployeeNo.getText();
+				String firstName = txtFirstName.getText();
+				String lastName = txtLastName.getText();
+				String birthPlace = txtBirthPlace.getText();
+				String identificationNo = txtIdentificationNo.getText();
+				String phoneNumber = txtPhoneNumber.getText();
+				String workPhoneNumber = txtWorkPhoneNumber.getText();
+				Long bloodGroupId = cbBloodGroup.getSelectedId();
+				Long genderId = cbGender.getSelectedId();
+				Long maritalStatusId = cbMaritalStatus.getSelectedId();
+				Long militaryStatusId = cbMilitaryStatus.getSelectedId();
+				OrganizationDTO staffOrganization = organizationComponent.getSelectedOrganizationDTO();
+				Long staffTitleId = staffTypeComponent.getSelectedId();
+				
+				Date birthDate = birthDatePicker.getDate();
+				Date startDate =startDatePicker.getDate();
+				
 				String active = rdBtnIsActive.isSelected() ? "1" : "0";
+				
 
-				if (code.contentEquals("")) {
-					showWarning("Please fill organization code field!");
+			
+				if (firstName.contentEquals("")) {
+					showWarning("Please fill personnel first name!");
+					return;
+				}
+				if (lastName.contentEquals("")) {
+					showWarning("Please fill personnel last name!");
+					return;
+				}
+				if (identificationNo.contentEquals("")) {
+					showWarning("Please fill personnel identification no!");
 					return;
 				}
 
-				if (name.contentEquals("")) {
-					showWarning("Please fill organization name!");
+				if(staffOrganization==null) {
+					showWarning("Please select staff organization!");
 					return;
 				}
-
-				organizationDTO.setCode(code);
-				organizationDTO.setName(name);
-				organizationDTO.setActive(active);
-
+				 
+				dto.setEmployeNo(employeeNo);
+				dto.setFirstName(firstName);
+				dto.setLastName(lastName);
+				dto.setBirthPlace(birthPlace);
+				dto.setIdentificationNo(identificationNo);
+				dto.setPhoneNumber(phoneNumber);
+				dto.setWorkPhoneNumber(workPhoneNumber);
+				dto.setActive(active);
+				dto.setBloodGroupId(bloodGroupId);
+				dto.setGenderId(genderId);
+				dto.setMaritalStatusId(maritalStatusId);
+				dto.setBirthDate(birthDate);
+				dto.setWorkStartDate(startDate);
+				dto.setMilitaryStatusId(militaryStatusId);
+				dto.setOrganizationId(staffOrganization.getOrganizationId());
+				dto.setStaffTitleId(staffTitleId);
 				try {
-					boolean isNew = organizationDTO.getOrganizationId() == null;
+					boolean isNew = dto.getStaffId() == null;
 
-					organizationDTO = serviceHelper.saveOrganizationDTO(organizationDTO);
-					dialogResult = new OrganizationAddDialogResult(organizationDTO);
+					dto = serviceHelper.saveStaffDTO(dto);
+					dialogResult = new StaffAddDialogResult(dto);
 					if (isNew) {
 						showSuccess("Successfully created.");
 					} else {
@@ -429,11 +469,26 @@ public class StaffAddDialog extends MainDialog {
 
 	}
 
-	public void setOrganization(OrganizationDTO entity) {
-		this.organization = entity;
-		if (organization != null) {
-			txtEmployeeNo.setText(entity.getCode());
-			txtFirstName.setText(entity.getName());
+	public void setEntity(StaffDTO entity) {
+		this.staffDTO = entity;
+		if (entity != null) {
+			
+			txtEmployeeNo.setText(entity.getEmployeNo());
+			txtFirstName.setText(entity.getFirstName());
+			txtBirthPlace.setText(entity.getBirthPlace());
+			txtIdentificationNo.setText(entity.getIdentificationNo());
+			txtLastName.setText(entity.getLastName());
+			txtPhoneNumber.setText(entity.getPhoneNumber());
+			txtWorkPhoneNumber.setText(entity.getWorkPhoneNumber());
+			birthDatePicker.setDate(entity.getBirthDate());
+			startDatePicker.setDate(entity.getWorkStartDate());
+			cbBloodGroup.setItemById(entity.getBloodGroupId());
+			cbGender.setItemById(entity.getGenderId());
+			cbMaritalStatus.setItemById(entity.getMaritalStatusId());
+			cbMilitaryStatus.setItemById(entity.getMilitaryStatusId());
+			organizationComponent.setOrganizationId(entity.getOrganizationId());
+			staffTypeComponent.setItemById(entity.getStaffTitleId());
+			
 			boolean isSelected = entity.getActive().equals("1") ? true : false;
 			rdBtnIsActive.setSelected(isSelected);
 			if (isSelected) {

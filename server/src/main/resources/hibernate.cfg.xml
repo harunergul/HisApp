@@ -21,9 +21,9 @@
 		<mapping resource="com/erc/entity/appointment.hbm.xml" />
 		<mapping resource="com/erc/entity/apellation.hbm.xml" />
 		<mapping resource="com/erc/entity/city.hbm.xml" />
-		<mapping resource="com/erc/entity/district.hbm.xml" /> 
+		<mapping resource="com/erc/entity/district.hbm.xml" /> -->
+		
 		<mapping resource="com/erc/entity/staff.hbm.xml" />
-		-->
 		<mapping resource="com/erc/entity/staffTitle.hbm.xml" />
 		<mapping resource="com/erc/entity/organization.hbm.xml" />
 		<mapping resource="com/erc/entity/codeDefinition.hbm.xml" />

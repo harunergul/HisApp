@@ -66,4 +66,24 @@ public class OrganizationService {
 		return null;
 	}
 
+	public OrganizationDTO getOrganizationById(String organizationId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT {t1.*} ");
+		sql.append(" FROM AHORGANIZATION t1 ");
+		sql.append(" WHERE t1.STATUS = '1' ");
+		sql.append(" AND t1.organizationId =:organizationId ");
+
+		@SuppressWarnings("unchecked")
+		NativeQuery<OrganizationDTO> query = config.getSession().createSQLQuery(sql.toString());
+		query.addEntity("t1", OrganizationDTO.class);
+		query.setParameter("organizationId", organizationId);
+
+		List<OrganizationDTO> results = query.list();
+
+		if (results.size() > 0) {
+			return results.get(0);
+		}
+		return null;
+	}
+
 }

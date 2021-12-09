@@ -28,9 +28,9 @@ public class OrganizationSelectionComponent extends MainPanel {
 
 	public OrganizationSelectionComponent() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] { 86, 150, 20, 0, 0 };
+		gridBagLayout.columnWidths = new int[] { 40, 100, 15, 15, 0 };
 		gridBagLayout.rowHeights = new int[] { 20, 0 };
-		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 
@@ -87,6 +87,23 @@ public class OrganizationSelectionComponent extends MainPanel {
 		this.selectedOrganizationDTO = selectedOrganizationDTO;
 	}
 
+	public void setOrganizationId(Long organizationId) {
+		if (organizationId == null) {
+			showError("Organization component needs valid organizationid ");
+			return;
+		} else {
+			try {
+				OrganizationDTO dto = serviceHelper.getOrganizationById(organizationId);
+				setSelectedOrganizationDTO(dto);
+			} catch (Exception e) {
+				showError(e.getLocalizedMessage());
+				e.printStackTrace();
+				return;
+
+			}
+		}
+	}
+
 	private void addEvents() {
 		btnSearch.setActionCommand(SEARCH_EVENT);
 		btnClear.setActionCommand(CLEAR_EVENT);
@@ -94,6 +111,7 @@ public class OrganizationSelectionComponent extends MainPanel {
 		ComponentEventListener listener = new ComponentEventListener();
 		btnSearch.addActionListener(listener);
 		btnClear.addActionListener(listener);
+		txtCode.addKeyListener(listener);
 
 	}
 
@@ -111,7 +129,7 @@ public class OrganizationSelectionComponent extends MainPanel {
 					return;
 				}
 				try {
-					OrganizationDTO dto = serviceHelper.getOrganizationByOrganizationCode("organizationCode");
+					OrganizationDTO dto = serviceHelper.getOrganizationByOrganizationCode(txtCode.getText());
 					setSelectedOrganizationDTO(dto);
 					setActionCommand(CustomEvent.ORGANIZATION_SELECTED);
 					fireActionPerformed();
@@ -132,7 +150,8 @@ public class OrganizationSelectionComponent extends MainPanel {
 				}
 
 				try {
-					OrganizationDTO dto = serviceHelper.getOrganizationByOrganizationCode("organizationCode");
+					OrganizationDTO dto = serviceHelper
+							.getOrganizationByOrganizationCode(txtCode.getText().toUpperCase());
 					setSelectedOrganizationDTO(dto);
 					setActionCommand(CustomEvent.ORGANIZATION_SELECTED);
 					fireActionPerformed();

@@ -21,7 +21,6 @@ public class CodeValueService {
 	@Autowired
 	private CodeDefinitionService codeDefinitionService;
 
-
 	public List<CodeValueDTO> getCodeValuesByCodeDefinition(String codeDefinition) {
 		CodeDefinitionDTO codeDefinitionDTO = codeDefinitionService
 				.getCodeDefinitionDTOByCodeDefinition(codeDefinition);
@@ -29,6 +28,16 @@ public class CodeValueService {
 		if (codeDefinitionDTO == null)
 			return null;
 		return getCodeValuesByCodeDefinitionId(codeDefinitionDTO.getCodeDefinitionId());
+
+	}
+	
+	public List<CodeValueDTO> getActiveCodeValuesByCodeDefinition(String codeDefinition) {
+		CodeDefinitionDTO codeDefinitionDTO = codeDefinitionService
+				.getCodeDefinitionDTOByCodeDefinition(codeDefinition);
+
+		if (codeDefinitionDTO == null)
+			return null;
+		return getActiveCodeValuesByCodeDefinitionId(codeDefinitionDTO.getCodeDefinitionId());
 
 	}
 
@@ -54,6 +63,30 @@ public class CodeValueService {
 		return list;
 
 	}
+	
+	public List<CodeValueDTO> getActiveCodeValuesByCodeDefinitionId(Long codeDefinitionId) {
+		Session session = config.getSession();
+
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT {t1.*} ");
+		sql.append(" FROM AHCODEVALUE t1 ");
+		sql.append(" WHERE t1.STATUS = '1'  AND t1.ACTIVE='1' ");
+		sql.append(" AND t1.codeDefinitionId =:codeDefinitionId ");
+
+		@SuppressWarnings("unchecked")
+		NativeQuery<CodeValueDTO> query = session.createSQLQuery(sql.toString());
+		query.addEntity("t1", CodeValueDTO.class);
+		query.setParameter("codeDefinitionId", codeDefinitionId);
+
+		List<CodeValueDTO> results = query.list();
+		List<CodeValueDTO> list = new ArrayList<>();
+		for (CodeValueDTO item : results) {
+			list.add(item);
+		}
+		return list;
+
+	}
+
 
 	public CodeValueDTO getCodeValueByCodeValueId(Long codeValueId) {
 		Session session = config.getSession();

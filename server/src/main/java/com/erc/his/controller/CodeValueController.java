@@ -82,6 +82,7 @@ public class CodeValueController {
 		List<CodeValueDTO> list = codeValueService.getCodeValuesByCodeDefinitionId(codeDefinitionId);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
+ 
 
 	@GetMapping("/code-definition/{codeDefinition}")
 	public ResponseEntity<List<CodeValueDTO>> getAllItemsByCodeType(@PathVariable String codeDefinition) {
@@ -89,4 +90,12 @@ public class CodeValueController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 
 	}
+	@GetMapping("/active-code-definition/{codeType}")
+	public ResponseEntity<List<CodeValueDTO>> getAllActiveItemsByCodeType(@PathVariable String codeType) {
+		List<CodeValueDTO> list = codeValueService.getActiveCodeValuesByCodeDefinition(codeType);
+		return new ResponseEntity<>(list, HttpStatus.OK);
+
+	}
+	
+	
 }

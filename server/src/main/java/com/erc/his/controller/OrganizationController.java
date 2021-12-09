@@ -18,33 +18,38 @@ import com.erc.his.service.OrganizationService;
 @RestController
 @RequestMapping("/organization")
 public class OrganizationController {
-	
+
 	@Autowired
 	private OrganizationService service;
-	
 
-	@PostMapping("/save")  
+	@PostMapping("/save")
 	public ResponseEntity<OrganizationDTO> save(@RequestBody OrganizationDTO dto) {
 		dto = service.save(dto);
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
-	
-	@PostMapping("/delete")  
+
+	@PostMapping("/delete")
 	public ResponseEntity<OrganizationDTO> delete(@RequestBody OrganizationDTO dto) {
 		dto.setStatus("0");
 		dto = service.save(dto);
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
-	
-	@GetMapping("/all") 
+
+	@GetMapping("/all")
 	public ResponseEntity<List<OrganizationDTO>> getAllOrganization() {
 		List<OrganizationDTO> list = service.getAllOrganization();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
-	@GetMapping("/code/{organizationCode}") 
-	public ResponseEntity<OrganizationDTO> getAllOrganization(@PathVariable String organizationCode) {
+
+	@GetMapping("/code/{organizationCode}")
+	public ResponseEntity<OrganizationDTO> getOrganizationByCode(@PathVariable String organizationCode) {
 		OrganizationDTO dto = service.getOrganizationByOrganizationCode(organizationCode);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
+	}
+
+	@GetMapping("/id/{organizationId}")
+	public ResponseEntity<OrganizationDTO> getOrganizationById(@PathVariable String organizationId) {
+		OrganizationDTO dto = service.getOrganizationById(organizationId);
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 }

@@ -19,6 +19,8 @@ public class StaffTypeComponent extends JComboBox<String> {
 		if (Beans.isDesignTime()) {
 			return;
 		}
+		this.removeAllItems();
+		this.addItem(choose);
 		ClientApp app = new ClientApp();
 		try {
 			titles = app.getAllStaffTitles();
@@ -29,8 +31,7 @@ public class StaffTypeComponent extends JComboBox<String> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.removeAllItems();
-		this.addItem(choose);
+		
 	}
 
 	public StaffTitleDTO getSelectedTitle() {

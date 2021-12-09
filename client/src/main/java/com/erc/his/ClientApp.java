@@ -18,6 +18,7 @@ import com.erc.his.entity.CodeDefinitionDTO;
 import com.erc.his.entity.CodeValueDTO;
 import com.erc.his.entity.OrganizationDTO;
 import com.erc.his.entity.PatientDTO;
+import com.erc.his.entity.StaffDTO;
 import com.erc.his.entity.StaffTitleDTO;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,7 +78,7 @@ public class ClientApp {
 	}
 
 	public static List<CodeValueDTO> getCodeValueByCodeType(String CODETYPE) throws Exception {
-		CodeValueDTO[] values = httpGetMethod("/code-value/code-definition/" + CODETYPE, CodeValueDTO[].class);
+		CodeValueDTO[] values = httpGetMethod("/code-value/active-code-definition/" + CODETYPE, CodeValueDTO[].class);
 		return convertToList(values);
 	}
 
@@ -85,10 +86,13 @@ public class ClientApp {
 		OrganizationDTO[] organizations = httpGetMethod("/organization/all", OrganizationDTO[].class);
 		return convertToList(organizations);
 	}
-	
+
 	public OrganizationDTO getOrganizationByOrganizationCode(String organizationCode) throws Exception {
 		return httpGetMethod("/organization/code/" + organizationCode, OrganizationDTO.class);
-		
+
+	}
+	public OrganizationDTO getOrganizationById(Long organizationId) throws Exception {
+		return httpGetMethod("/organization/id/" + organizationId, OrganizationDTO.class);
 	}
 
 	public ArrayList<StaffTitleDTO> getAllStaffTitles() throws Exception {
@@ -96,6 +100,10 @@ public class ClientApp {
 		return convertToList(dtos);
 	}
 
+	public ArrayList<StaffDTO> getAllStaffs() throws Exception {
+		StaffDTO[] dtos = httpGetMethod("/staff/all", StaffDTO[].class);
+		return convertToList(dtos);
+	}
 	public void deletePatient(PatientDTO patientDTO) throws Exception {
 		postRequest("/patient/delete", PatientDTO.class, gson.toJson(patientDTO));
 	}
@@ -255,6 +263,14 @@ public class ClientApp {
 
 	public void deleteStaffTitleDTO(StaffTitleDTO dto) throws Exception {
 		postRequest("/staff-title/delete", StaffTitleDTO.class, gson.toJson(dto));
+	}
+
+	public StaffDTO saveStaffDTO(StaffDTO dto) throws Exception {
+		return postRequest("/staff/save", StaffDTO.class, gson.toJson(dto));
+	}
+
+	public void deleteStaffDTO(StaffDTO dto) throws Exception {
+		postRequest("/staff/delete", StaffDTO.class, gson.toJson(dto));
 	}
 
 	

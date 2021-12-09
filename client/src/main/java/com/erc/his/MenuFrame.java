@@ -22,6 +22,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import com.erc.his.client.view.PatientPanel;
 import com.erc.his.client.view.definition.ParameterDefinitionPanel;
 import com.erc.his.client.view.organization.OrganizationPanel;
+import com.erc.his.client.view.staff.StaffPanel;
 import com.erc.his.client.view.stafftitle.StaffTitlePanel;
 import com.erc.his.menu.UserMenu;
 import com.erc.his.menu.UserSubMenu;
@@ -96,13 +97,12 @@ public class MenuFrame extends JFrame {
 		settingsMenu.subMenus.add(new UserSubMenu("Organizations", OrganizationPanel.class));
 		settingsMenu.subMenus.add(new UserSubMenu("Parameter Definition", ParameterDefinitionPanel.class));
 		settingsMenu.subMenus.add(new UserSubMenu("Titles", StaffTitlePanel.class));
+		settingsMenu.subMenus.add(new UserSubMenu("Staffs", StaffPanel.class));
 
 		List<UserMenu> menuList = new ArrayList<UserMenu>();
 		menuList.add(patientMenu);
 		menuList.add(settingsMenu);
-		
-		
-		
+
 		return menuList;
 	}
 

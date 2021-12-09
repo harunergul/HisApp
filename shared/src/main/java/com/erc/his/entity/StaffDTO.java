@@ -21,6 +21,7 @@ public class StaffDTO extends BaseEntity {
 	private String phoneNumber;
 	private Long militaryStatusId;
 	private Date workStartDate;
+	private String active;
 	private String status;
 
 	public Long getStaffId() {
@@ -149,6 +150,14 @@ public class StaffDTO extends BaseEntity {
 
 	public void setWorkStartDate(Date workStartDate) {
 		this.workStartDate = workStartDate;
+	}
+
+	public String getActive() {
+		return active;
+	}
+
+	public void setActive(String active) {
+		this.active = active;
 	}
 
 	public String getStatus() {
