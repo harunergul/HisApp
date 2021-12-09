@@ -9,11 +9,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.erc.his.ClientApp;
+
 public class MainPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	
+	public ClientApp serviceHelper = new ClientApp();
 	private String actionCommand;
 	private Action action;
 	
@@ -74,6 +76,8 @@ public class MainPanel extends JPanel {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	
 	
 	
 	

@@ -4,4 +4,5 @@ public class CodeDefinitionConstant{
 	public static String GENDER = "GENDER";
 	public static String BLOODGROUP  = "BLOODGROUP";
 	public static String MARITALSTATUS = "MARITALSTATUS";
+	public static String MILITARYSTATUS = "MILITARYSTATUS";
 }

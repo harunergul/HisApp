@@ -85,6 +85,11 @@ public class ClientApp {
 		OrganizationDTO[] organizations = httpGetMethod("/organization/all", OrganizationDTO[].class);
 		return convertToList(organizations);
 	}
+	
+	public OrganizationDTO getOrganizationByOrganizationCode(String organizationCode) throws Exception {
+		return httpGetMethod("/organization/code/" + organizationCode, OrganizationDTO.class);
+		
+	}
 
 	public ArrayList<StaffTitleDTO> getAllStaffTitles() throws Exception {
 		StaffTitleDTO[] dtos = httpGetMethod("/staff-title/all", StaffTitleDTO[].class);
@@ -251,5 +256,7 @@ public class ClientApp {
 	public void deleteStaffTitleDTO(StaffTitleDTO dto) throws Exception {
 		postRequest("/staff-title/delete", StaffTitleDTO.class, gson.toJson(dto));
 	}
+
+	
 
 }

@@ -1,5 +1,6 @@
 package com.erc.his.client.component;
 
+import java.beans.Beans;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,10 @@ public class CodeValueCombobox extends JComboBox<String> {
 	private List<CodeValueDTO> codeValues = new ArrayList<CodeValueDTO>();
 
 	public CodeValueCombobox(String CODETYPE) {
+		
+		if (Beans.isDesignTime()) {
+			return;
+		}
 		this.removeAllItems();
 		this.addItem(choose);
 		try {

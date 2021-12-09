@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,5 +40,11 @@ public class OrganizationController {
 	public ResponseEntity<List<OrganizationDTO>> getAllOrganization() {
 		List<OrganizationDTO> list = service.getAllOrganization();
 		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@GetMapping("/code/{organizationCode}") 
+	public ResponseEntity<OrganizationDTO> getAllOrganization(@PathVariable String organizationCode) {
+		OrganizationDTO dto = service.getOrganizationByOrganizationCode(organizationCode);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 }
