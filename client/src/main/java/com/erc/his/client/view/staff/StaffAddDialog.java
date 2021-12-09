@@ -18,6 +18,7 @@ import com.erc.his.constant.CodeDefinitionConstant;
 import com.erc.his.entity.OrganizationDTO;
 import com.erc.his.client.component.DatePickerComponent;
 import com.erc.his.client.component.CodeValueCombobox;
+import com.erc.his.client.component.StaffTypeComponent;
 
 public class StaffAddDialog extends MainDialog {
 
@@ -45,17 +46,25 @@ public class StaffAddDialog extends MainDialog {
 	private final CodeValueCombobox cbBloodGroup = new CodeValueCombobox(CodeDefinitionConstant.BLOODGROUP);
 	private final CodeValueCombobox cbMilitaryStatus = new CodeValueCombobox(CodeDefinitionConstant.MILITARYSTATUS);
 	private OrganizationSelectionComponent organizationComponent = new OrganizationSelectionComponent();
+	private final StaffTypeComponent staffTypeComponent = new StaffTypeComponent();
+	private final DatePickerComponent birthDatePicker_1 = new DatePickerComponent();
+	private final JTextField txtPhoneNumber = new JTextField();
+	private final JTextField txtWorkPhoneNumber = new JTextField();
 
 	public StaffAddDialog() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] { 5, 90, 5, 150, 5, 90, 150, 0, 0, 5, 0 };
-		gridBagLayout.rowHeights = new int[] { 5, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0 };
-		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+		gridBagLayout.columnWidths = new int[] { 5, 90, 5, 150, 5, 90, 150, 40, 40, 0, 5, 0 };
+		gridBagLayout.rowHeights = new int[] { 5, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0 };
+		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
 				Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+				Double.MIN_VALUE };
 		getContentPane().setLayout(gridBagLayout);
-
+		JLabel lblStartDate = new JLabel("Start Date");
+		JLabel lblPhoneNumber = new JLabel("Mobile Phone");
+		JLabel lblWorkPhoneNumber = new JLabel("Work Phone");
 		JLabel lblEmployeeNo = new JLabel("Employee No");
+		JLabel lblStaffType = new JLabel("Staff Type");
 		GridBagConstraints gbc_lblEmployeeNo = new GridBagConstraints();
 		gbc_lblEmployeeNo.anchor = GridBagConstraints.WEST;
 		gbc_lblEmployeeNo.insets = new Insets(0, 0, 5, 5);
@@ -82,6 +91,7 @@ public class StaffAddDialog extends MainDialog {
 		JLabel lblOrganization = new JLabel("Organization");
 		txtIdentificationNo.setColumns(10);
 		GridBagConstraints gbc_txtIdentificationNo = new GridBagConstraints();
+		gbc_txtIdentificationNo.gridwidth = 3;
 		gbc_txtIdentificationNo.insets = new Insets(0, 0, 5, 5);
 		gbc_txtIdentificationNo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtIdentificationNo.gridx = 6;
@@ -114,6 +124,7 @@ public class StaffAddDialog extends MainDialog {
 
 		txtLastName.setColumns(10);
 		GridBagConstraints gbc_txtLastName = new GridBagConstraints();
+		gbc_txtLastName.gridwidth = 3;
 		gbc_txtLastName.insets = new Insets(0, 0, 5, 5);
 		gbc_txtLastName.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtLastName.gridx = 6;
@@ -145,6 +156,7 @@ public class StaffAddDialog extends MainDialog {
 
 		txtBirthPlace.setColumns(10);
 		GridBagConstraints gbc_txtBirthPlace = new GridBagConstraints();
+		gbc_txtBirthPlace.gridwidth = 3;
 		gbc_txtBirthPlace.insets = new Insets(0, 0, 5, 5);
 		gbc_txtBirthPlace.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtBirthPlace.gridx = 6;
@@ -174,6 +186,7 @@ public class StaffAddDialog extends MainDialog {
 		getContentPane().add(lblMaritalStatus, gbc_lblMaritalStatus);
 
 		GridBagConstraints gbc_cbMaritalStatus = new GridBagConstraints();
+		gbc_cbMaritalStatus.gridwidth = 3;
 		gbc_cbMaritalStatus.insets = new Insets(0, 0, 5, 5);
 		gbc_cbMaritalStatus.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbMaritalStatus.gridx = 6;
@@ -202,6 +215,7 @@ public class StaffAddDialog extends MainDialog {
 		getContentPane().add(lblMilitaryStatus, gbc_lblMilitaryStatus);
 
 		GridBagConstraints gbc_cbMilitaryStatus = new GridBagConstraints();
+		gbc_cbMilitaryStatus.gridwidth = 3;
 		gbc_cbMilitaryStatus.insets = new Insets(0, 0, 5, 5);
 		gbc_cbMilitaryStatus.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbMilitaryStatus.gridx = 6;
@@ -221,33 +235,93 @@ public class StaffAddDialog extends MainDialog {
 		gbc_organizationComponent.gridy = 6;
 		getContentPane().add(organizationComponent, gbc_organizationComponent);
 
+		GridBagConstraints gbc_lblStaffType = new GridBagConstraints();
+		gbc_lblStaffType.insets = new Insets(0, 0, 5, 5);
+		gbc_lblStaffType.anchor = GridBagConstraints.WEST;
+		gbc_lblStaffType.gridx = 5;
+		gbc_lblStaffType.gridy = 6;
+		getContentPane().add(lblStaffType, gbc_lblStaffType);
+
+		GridBagConstraints gbc_staffTypeComponent = new GridBagConstraints();
+		gbc_staffTypeComponent.gridwidth = 3;
+		gbc_staffTypeComponent.insets = new Insets(0, 0, 5, 5);
+		gbc_staffTypeComponent.fill = GridBagConstraints.HORIZONTAL;
+		gbc_staffTypeComponent.gridx = 6;
+		gbc_staffTypeComponent.gridy = 6;
+		getContentPane().add(staffTypeComponent, gbc_staffTypeComponent);
+
+		GridBagConstraints gbc_lblPhoneNumber = new GridBagConstraints();
+		gbc_lblPhoneNumber.anchor = GridBagConstraints.WEST;
+		gbc_lblPhoneNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPhoneNumber.gridx = 1;
+		gbc_lblPhoneNumber.gridy = 7;
+		getContentPane().add(lblPhoneNumber, gbc_lblPhoneNumber);
+
+		GridBagConstraints gbc_txtPhoneNumber = new GridBagConstraints();
+		gbc_txtPhoneNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_txtPhoneNumber.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtPhoneNumber.gridx = 3;
+		gbc_txtPhoneNumber.gridy = 7;
+		txtPhoneNumber.setColumns(10);
+		getContentPane().add(txtPhoneNumber, gbc_txtPhoneNumber);
+
+		GridBagConstraints gbc_lblStartDate = new GridBagConstraints();
+		gbc_lblStartDate.anchor = GridBagConstraints.WEST;
+		gbc_lblStartDate.insets = new Insets(0, 0, 5, 5);
+		gbc_lblStartDate.gridx = 5;
+		gbc_lblStartDate.gridy = 7;
+		getContentPane().add(lblStartDate, gbc_lblStartDate);
+
+		GridBagConstraints gbc_birthDatePicker_1 = new GridBagConstraints();
+		gbc_birthDatePicker_1.gridwidth = 3;
+		gbc_birthDatePicker_1.insets = new Insets(0, 0, 5, 5);
+		gbc_birthDatePicker_1.fill = GridBagConstraints.BOTH;
+		gbc_birthDatePicker_1.gridx = 6;
+		gbc_birthDatePicker_1.gridy = 7;
+		getContentPane().add(birthDatePicker_1, gbc_birthDatePicker_1);
+
+		GridBagConstraints gbc_lblWorkPhoneNumber = new GridBagConstraints();
+		gbc_lblWorkPhoneNumber.anchor = GridBagConstraints.WEST;
+		gbc_lblWorkPhoneNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_lblWorkPhoneNumber.gridx = 1;
+		gbc_lblWorkPhoneNumber.gridy = 8;
+		getContentPane().add(lblWorkPhoneNumber, gbc_lblWorkPhoneNumber);
+
+		GridBagConstraints gbc_txtWorkPhoneNumber = new GridBagConstraints();
+		gbc_txtWorkPhoneNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_txtWorkPhoneNumber.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtWorkPhoneNumber.gridx = 3;
+		gbc_txtWorkPhoneNumber.gridy = 8;
+		txtWorkPhoneNumber.setColumns(10);
+		getContentPane().add(txtWorkPhoneNumber, gbc_txtWorkPhoneNumber);
+
 		JLabel lblIsActive = new JLabel("Is Active?");
 		GridBagConstraints gbc_lblIsActive = new GridBagConstraints();
 		gbc_lblIsActive.anchor = GridBagConstraints.WEST;
 		gbc_lblIsActive.insets = new Insets(0, 0, 5, 5);
-		gbc_lblIsActive.gridx = 1;
+		gbc_lblIsActive.gridx = 5;
 		gbc_lblIsActive.gridy = 8;
 		getContentPane().add(lblIsActive, gbc_lblIsActive);
 
 		GridBagConstraints gbc_rdBtnIsActive = new GridBagConstraints();
 		gbc_rdBtnIsActive.anchor = GridBagConstraints.WEST;
 		gbc_rdBtnIsActive.insets = new Insets(0, 0, 5, 5);
-		gbc_rdBtnIsActive.gridx = 3;
+		gbc_rdBtnIsActive.gridx = 6;
 		gbc_rdBtnIsActive.gridy = 8;
 		getContentPane().add(rdBtnIsActive, gbc_rdBtnIsActive);
 
 		GridBagConstraints gbc_btnSave = new GridBagConstraints();
 		gbc_btnSave.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSave.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSave.gridx = 6;
-		gbc_btnSave.gridy = 8;
+		gbc_btnSave.gridx = 7;
+		gbc_btnSave.gridy = 9;
 		getContentPane().add(btnSave, gbc_btnSave);
 
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCancel.gridx = 7;
-		gbc_btnCancel.gridy = 8;
+		gbc_btnCancel.gridx = 8;
+		gbc_btnCancel.gridy = 9;
 		getContentPane().add(btnCancel, gbc_btnCancel);
 
 		addEvents();
