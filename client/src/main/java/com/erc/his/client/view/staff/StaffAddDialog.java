@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 
 import com.erc.his.ClientApp;
 import com.erc.his.client.component.MainDialog;
-import com.erc.his.client.view.organization.OrganizationSelectionComponent;
+import com.erc.his.client.component.OrganizationSelectionComponent;
 import com.erc.his.constant.CodeDefinitionConstant;
 import com.erc.his.entity.OrganizationDTO;
 import com.erc.his.client.component.DatePickerComponent;

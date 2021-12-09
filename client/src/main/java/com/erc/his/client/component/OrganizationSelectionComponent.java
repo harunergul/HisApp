@@ -1,4 +1,4 @@
-package com.erc.his.client.view.organization;
+package com.erc.his.client.component;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,9 +10,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JTextField;
 
-import com.erc.his.client.component.AqButton;
-import com.erc.his.client.component.ButtonIcon;
-import com.erc.his.client.component.MainPanel;
 import com.erc.his.client.constant.CustomEvent;
 import com.erc.his.entity.OrganizationDTO;
 
