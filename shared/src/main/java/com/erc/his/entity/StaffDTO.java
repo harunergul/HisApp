@@ -23,6 +23,8 @@ public class StaffDTO extends BaseEntity {
 	private Date workStartDate;
 	private String active;
 	private String status;
+	private String scalarOrganizationName;
+	private String scalarStaffTitle;
 
 	public Long getStaffId() {
 		return staffId;
@@ -170,6 +172,22 @@ public class StaffDTO extends BaseEntity {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getScalarOrganizationName() {
+		return scalarOrganizationName;
+	}
+
+	public void setScalarOrganizationName(String scalarOrganizationName) {
+		this.scalarOrganizationName = scalarOrganizationName;
+	}
+
+	public String getScalarStaffTitle() {
+		return scalarStaffTitle;
+	}
+
+	public void setScalarStaffTitle(String scalarStaffTitle) {
+		this.scalarStaffTitle = scalarStaffTitle;
 	}
 
 }

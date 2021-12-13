@@ -50,9 +50,9 @@ public class StaffTableModel extends AbstractTableModel {
 		case 3:
 			return dto.getLastName();
 		case 4:
-			return dto.getOrganizationId();
+			return dto.getScalarOrganizationName();
 		case 5:
-			return dto.getStaffTitleId();
+			return dto.getScalarStaffTitle();
 		case 6:
 			return dto.getActive().equals("1") ? "ACTIVE" : "PASSIVE";
 
