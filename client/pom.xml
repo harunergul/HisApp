@@ -58,5 +58,11 @@
 			<artifactId>jide-oss</artifactId>
 			<version>3.6.18</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.jcalendar</groupId>
+			<artifactId>jcalendar</artifactId>
+			<version>1.4</version>
+		</dependency>
 	</dependencies>
 </project>

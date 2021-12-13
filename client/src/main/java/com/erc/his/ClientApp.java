@@ -14,6 +14,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import com.erc.his.entity.AdmissionDTO;
+import com.erc.his.entity.AppointmentDTO;
 import com.erc.his.entity.CodeDefinitionDTO;
 import com.erc.his.entity.CodeValueDTO;
 import com.erc.his.entity.OrganizationDTO;
@@ -102,6 +103,11 @@ public class ClientApp {
 
 	public ArrayList<StaffDTO> getAllStaffs() throws Exception {
 		StaffDTO[] dtos = httpGetMethod("/staff/all", StaffDTO[].class);
+		return convertToList(dtos);
+	}
+
+	public ArrayList<AppointmentDTO> getAllAppointments(Long organizationId, Date selectedDate) throws Exception {
+		AppointmentDTO[] dtos = httpGetMethod("/appointment?organizationId=organizationId", AppointmentDTO[].class);
 		return convertToList(dtos);
 	}
 	public void deletePatient(PatientDTO patientDTO) throws Exception {
@@ -272,6 +278,8 @@ public class ClientApp {
 	public void deleteStaffDTO(StaffDTO dto) throws Exception {
 		postRequest("/staff/delete", StaffDTO.class, gson.toJson(dto));
 	}
+
+
 
 	
 

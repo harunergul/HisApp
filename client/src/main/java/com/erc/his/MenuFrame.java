@@ -20,6 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.erc.his.client.view.PatientPanel;
+import com.erc.his.client.view.appointment.AppointmentPanel;
 import com.erc.his.client.view.definition.ParameterDefinitionPanel;
 import com.erc.his.client.view.organization.OrganizationPanel;
 import com.erc.his.client.view.staff.StaffPanel;
@@ -92,6 +93,10 @@ public class MenuFrame extends JFrame {
 	private List<UserMenu> getUserMenus() {
 		UserMenu patientMenu = new UserMenu("Patient");
 		patientMenu.subMenus.add(new UserSubMenu("Prs001: Patient Screen", PatientPanel.class));
+		
+		UserMenu appointmentMenu = new  UserMenu("Appointments");
+		appointmentMenu.subMenus.add(new UserSubMenu("Rss001: Appointment", AppointmentPanel.class));
+		
 
 		UserMenu settingsMenu = new UserMenu("Settings");
 		settingsMenu.subMenus.add(new UserSubMenu("Organizations", OrganizationPanel.class));
@@ -99,8 +104,11 @@ public class MenuFrame extends JFrame {
 		settingsMenu.subMenus.add(new UserSubMenu("Titles", StaffTitlePanel.class));
 		settingsMenu.subMenus.add(new UserSubMenu("Staffs", StaffPanel.class));
 
+		
+		
 		List<UserMenu> menuList = new ArrayList<UserMenu>();
 		menuList.add(patientMenu);
+		menuList.add(appointmentMenu);
 		menuList.add(settingsMenu);
 
 		return menuList;

@@ -33,19 +33,23 @@ public class CodeValueCombobox extends JComboBox<String> {
 	}
 
 	public CodeValueDTO getSelectedCodeValue() { 
-		if (this.getSelectedItem() == null)
+		if (this.getSelectedItem() == null || this.getSelectedIndex()==0)
 			return null;
 		return codeValues.get(this.getSelectedIndex()-1);
 	}
 
 	public Long getSelectedId() {
 		if (this.getSelectedItem() != null) {
-			return getSelectedCodeValue().getCodeValueId();
-		} else {
-			return null;
+			CodeValueDTO codeValue = getSelectedCodeValue();
+			if (codeValue != null) {
+				return getSelectedCodeValue().getCodeValueId();
+
+			} 
+
 		}
+		return null;
 	}
-	
+
 	public void setItemById(Long codeValueId) {
 		for (CodeValueDTO codeValueDTO : codeValues) {
 			if(codeValueDTO.getCodeValueId().compareTo(codeValueId)==0) {

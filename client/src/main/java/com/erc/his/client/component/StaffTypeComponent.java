@@ -35,17 +35,19 @@ public class StaffTypeComponent extends JComboBox<String> {
 	}
 
 	public StaffTitleDTO getSelectedTitle() {
-		if (this.getSelectedItem() == null)
+		if (this.getSelectedItem() == null || this.getSelectedIndex()==0)
 			return null;
 		return titles.get(this.getSelectedIndex() - 1);
 	}
 
 	public Long getSelectedId() {
 		if (this.getSelectedItem() != null) {
-			return getSelectedTitle().getStaffTitleId();
-		} else {
-			return null;
+			StaffTitleDTO staffTitle = getSelectedTitle();
+			if (staffTitle != null) {
+				return getSelectedTitle().getStaffTitleId();
+			}
 		}
+		return null;
 	}
 
 	public void setItemById(Long codeValueId) {
