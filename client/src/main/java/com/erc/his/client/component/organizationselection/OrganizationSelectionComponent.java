@@ -1,4 +1,4 @@
-package com.erc.his.client.component;
+package com.erc.his.client.component.organizationselection;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,6 +10,9 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JTextField;
 
+import com.erc.his.client.component.AqButton;
+import com.erc.his.client.component.ButtonIcon;
+import com.erc.his.client.component.MainPanel;
 import com.erc.his.client.constant.CustomEvent;
 import com.erc.his.entity.OrganizationDTO;
 
@@ -125,8 +128,14 @@ public class OrganizationSelectionComponent extends MainPanel {
 				fireActionPerformed();
 			} else if (e.getActionCommand().equals(SEARCH_EVENT)) {
 				if (txtCode.getText().isEmpty()) {
-					showWarning("Please enter organization code");
-					return;
+					OrganizationSelectionDialog dialog = new OrganizationSelectionDialog();
+					dialog.setModal(true);
+					dialog.setSize(560, 250);
+					dialog.setLocationRelativeTo(null);
+					dialog.setVisible(true);
+					setSelectedOrganizationDTO(dialog.getSelectedOrganizationDTO());
+					setActionCommand(CustomEvent.ORGANIZATION_SELECTED);
+					fireActionPerformed();
 				}
 				try {
 					OrganizationDTO dto = serviceHelper.getOrganizationByOrganizationCode(txtCode.getText());

@@ -14,15 +14,11 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -176,18 +172,19 @@ public class AppointmentPanel extends MainPanel {
 		try {
 			List<AppointmentDTO> appointments = serviceHelper.getAllAppointments(organizationDTO.getOrganizationId(),
 					selectedDate);
-
-			SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm");
-			appointmentTableModel.getListData().stream().map(row -> {
-				String rowDate = dateFormatter.format(row);
-				Optional<AppointmentDTO> appointmentHolder = appointments.stream().filter(
-						appointment -> dateFormatter.format(appointment.getAppointmentDate()).equals(rowDate))
-						.findFirst();
-				if (appointmentHolder.isPresent()) {
-					row.setAppointment(appointmentHolder.get());
-				}
-				return row;
-			});
+			if (appointments != null) {
+				SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm");
+				appointmentTableModel.getListData().stream().map(row -> {
+					String rowDate = dateFormatter.format(row);
+					Optional<AppointmentDTO> appointmentHolder = appointments.stream().filter(
+							appointment -> dateFormatter.format(appointment.getAppointmentDate()).equals(rowDate))
+							.findFirst();
+					if (appointmentHolder.isPresent()) {
+						row.setAppointment(appointmentHolder.get());
+					}
+					return row;
+				});
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

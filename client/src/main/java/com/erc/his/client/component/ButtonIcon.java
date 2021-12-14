@@ -3,6 +3,8 @@ package com.erc.his.client.component;
 public class ButtonIcon {
 
 	public static String ADD = "add";
+	public static String CHECK = "check";
+	public static String CHECK_LIST = "checklist";
 	public static String ADDRESS_BOOK = "address-book";
 	public static String ALARM_CLOCK = "alarm-clock";
 	public static String AMBULANCE = "ambulance";

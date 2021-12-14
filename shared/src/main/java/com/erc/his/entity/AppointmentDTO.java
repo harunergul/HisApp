@@ -9,6 +9,7 @@ public class AppointmentDTO extends BaseEntity {
 	private Long patientId;
 	private Long organizationId;
 	private Long doctorId;
+	private String note;
 	private Timestamp appointmentDate;
 	private Timestamp createDate;
 	private Timestamp updateDate;
@@ -23,6 +24,14 @@ public class AppointmentDTO extends BaseEntity {
 
 	public void setAppointmentId(Long appointmentId) {
 		this.appointmentId = appointmentId;
+	}
+
+	public Long getPatientId() {
+		return patientId;
+	}
+
+	public void setPatientId(Long patientId) {
+		this.patientId = patientId;
 	}
 
 	public Long getOrganizationId() {
@@ -41,12 +50,12 @@ public class AppointmentDTO extends BaseEntity {
 		this.doctorId = doctorId;
 	}
 
-	public Long getPatientId() {
-		return patientId;
+	public String getNote() {
+		return note;
 	}
 
-	public void setPatientId(Long patientId) {
-		this.patientId = patientId;
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public Timestamp getAppointmentDate() {
@@ -95,6 +104,10 @@ public class AppointmentDTO extends BaseEntity {
 
 	public void setScalarDoctorName(String scalarDoctorName) {
 		this.scalarDoctorName = scalarDoctorName;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }

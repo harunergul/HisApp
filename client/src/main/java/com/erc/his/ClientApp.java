@@ -7,6 +7,7 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -92,6 +93,7 @@ public class ClientApp {
 		return httpGetMethod("/organization/code/" + organizationCode, OrganizationDTO.class);
 
 	}
+
 	public OrganizationDTO getOrganizationById(Long organizationId) throws Exception {
 		return httpGetMethod("/organization/id/" + organizationId, OrganizationDTO.class);
 	}
@@ -107,9 +109,12 @@ public class ClientApp {
 	}
 
 	public ArrayList<AppointmentDTO> getAllAppointments(Long organizationId, Date selectedDate) throws Exception {
-		AppointmentDTO[] dtos = httpGetMethod("/appointment?organizationId=organizationId", AppointmentDTO[].class);
+		String dateString = new SimpleDateFormat("yyyy-MM-dd").format(selectedDate);
+		AppointmentDTO[] dtos = httpGetMethod("/appointment?organizationId=" + organizationId + "&date=" + dateString,
+				AppointmentDTO[].class);
 		return convertToList(dtos);
 	}
+
 	public void deletePatient(PatientDTO patientDTO) throws Exception {
 		postRequest("/patient/delete", PatientDTO.class, gson.toJson(patientDTO));
 	}
@@ -278,9 +283,5 @@ public class ClientApp {
 	public void deleteStaffDTO(StaffDTO dto) throws Exception {
 		postRequest("/staff/delete", StaffDTO.class, gson.toJson(dto));
 	}
-
-
-
-	
 
 }

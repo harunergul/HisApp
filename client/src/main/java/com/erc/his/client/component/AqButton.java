@@ -17,6 +17,12 @@ public class AqButton extends JButton {
 		setIcon(ButtonIcon.CLOSE);
 	}
 
+	public AqButton(String name, String icon) {
+
+		setText(name);
+		setIcon(icon);
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	public void setIcon(String iconType) {

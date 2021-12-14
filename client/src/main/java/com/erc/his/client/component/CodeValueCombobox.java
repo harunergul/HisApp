@@ -43,9 +43,7 @@ public class CodeValueCombobox extends JComboBox<String> {
 			CodeValueDTO codeValue = getSelectedCodeValue();
 			if (codeValue != null) {
 				return getSelectedCodeValue().getCodeValueId();
-
 			} 
-
 		}
 		return null;
 	}

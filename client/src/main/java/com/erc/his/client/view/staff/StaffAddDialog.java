@@ -14,13 +14,13 @@ import javax.swing.JTextField;
 
 import com.erc.his.ClientApp;
 import com.erc.his.client.component.MainDialog;
-import com.erc.his.client.component.OrganizationSelectionComponent;
 import com.erc.his.constant.CodeDefinitionConstant;
 import com.erc.his.entity.OrganizationDTO;
 import com.erc.his.entity.StaffDTO;
 import com.erc.his.client.component.DatePickerComponent;
 import com.erc.his.client.component.CodeValueCombobox;
 import com.erc.his.client.component.StaffTypeComponent;
+import com.erc.his.client.component.organizationselection.OrganizationSelectionComponent;
 
 public class StaffAddDialog extends MainDialog {
 

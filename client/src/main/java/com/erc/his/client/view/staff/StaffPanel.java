@@ -104,7 +104,7 @@ public class StaffPanel extends MainPanel {
 			if (cmd.equals(ADD_EVENT)) {
 				StaffAddDialog dialog = new StaffAddDialog();
 				dialog.setModal(true);
-				dialog.setSize(650, 350);
+				dialog.setSize(690, 350);
 				dialog.setLocationRelativeTo(null);
 				dialog.setVisible(true);
 
